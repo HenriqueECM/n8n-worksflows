@@ -1,0 +1,355 @@
+{
+  "name": "Fluxo Proposta Otimizado (Config + IA Gateway)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "compass-otimizado",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "1",
+      "name": "Webhook Entrada",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -900,
+        0
+      ],
+      "webhookId": "5b76764e-e132-434c-9c7f-f163f0732768"
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = $json;\nconst allowedAbas = ['dados_gerais','requisitos','cronograma'];\nif (!payload.aba || !allowedAbas.includes(payload.aba)) {\n  throw new Error('Campo `aba` inválido. Use: dados_gerais, requisitos ou cronograma.');\n}\nif (!payload.texto_base || String(payload.texto_base).trim().length < 10) {\n  throw new Error('Campo `texto_base` obrigatório com pelo menos 10 caracteres.');\n}\nif (String(payload.texto_base).length > 12000) {\n  throw new Error('Campo `texto_base` excede limite de 12000 caracteres.');\n}\nreturn [{ json: payload }];"
+      },
+      "id": "2",
+      "name": "Validar Entrada",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -680,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.aba }}",
+                    "rightValue": "dados_gerais",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.aba }}",
+                    "rightValue": "requisitos",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.aba }}",
+                    "rightValue": "cronograma",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        }
+      },
+      "id": "3",
+      "name": "Switch Aba",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -460,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const cfg = {\n  descricao_projeto: { prompt_template_id: 'dados_gerais.descricao_projeto.v1', output_key: 'descricao_projeto' },\n  situacao_atual: { prompt_template_id: 'dados_gerais.situacao_atual.v1', output_key: 'situacao_atual' },\n  aprovacoes_anteriores: { prompt_template_id: 'dados_gerais.aprovacoes_anteriores.v1', output_key: 'aprovacoes_anteriores' },\n  escopo_projeto: { prompt_template_id: 'dados_gerais.escopo_projeto.v1', output_key: 'escopo_projeto' },\n  fora_escopo: { prompt_template_id: 'dados_gerais.fora_escopo.v1', output_key: 'fora_escopo' },\n  alternativas_avaliadas: { prompt_template_id: 'dados_gerais.alternativas_avaliadas.v1', output_key: 'alternativas_avaliadas' },\n  riscos_mitigacao: { prompt_template_id: 'dados_gerais.riscos_mitigacao.v1', output_key: 'riscos_mitigacao' },\n  resultados_qualitativos: { prompt_template_id: 'dados_gerais.resultados_qualitativos.v1', output_key: 'resultados_qualitativos' },\n  ganhos_potenciais: { prompt_template_id: 'dados_gerais.ganhos_potenciais.v1', output_key: 'ganhos_potenciais' },\n  ganhos_reais: { prompt_template_id: 'dados_gerais.ganhos_reais.v1', output_key: 'ganhos_reais' },\n  notas_orcamento: { prompt_template_id: 'dados_gerais.notas_orcamento.v1', output_key: 'notas_orcamento' },\n  analise_financeira: { prompt_template_id: 'dados_gerais.analise_financeira.v1', output_key: 'analise_financeira' },\n};\n\nif (!cfg[$json.campo]) {\n  throw new Error('Campo de dados_gerais inválido.');\n}\n\nreturn [{\n  json: {\n    ...$json,\n    ia_request: {\n      prompt_template_id: cfg[$json.campo].prompt_template_id,\n      input: $json.texto_base,\n      output_key: cfg[$json.campo].output_key,\n      metadata: { proposal_id: $json.proposal_id || null, aba: $json.aba, campo: $json.campo || null }\n    }\n  }\n}];"
+      },
+      "id": "4",
+      "name": "Config Dados Gerais",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const hasReq = Array.isArray($json.requisitos) && $json.requisitos.length > 0;\nreturn [{\n  json: {\n    ...$json,\n    ia_request: {\n      prompt_template_id: hasReq ? 'requisitos.com_lista.v1' : 'requisitos.sem_lista.v1',\n      input: $json.texto_base,\n      context: { requisitos: $json.requisitos || [] },\n      output_key: 'levantamento_requisitos',\n      metadata: { proposal_id: $json.proposal_id || null, aba: $json.aba }\n    }\n  }\n}];"
+      },
+      "id": "5",
+      "name": "Config Requisitos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const hasAcoes = Array.isArray($json.acoes) && $json.acoes.length > 0;\nreturn [{\n  json: {\n    ...$json,\n    ia_request: {\n      prompt_template_id: hasAcoes ? 'cronograma.com_acoes.v1' : 'cronograma.sem_acoes.v1',\n      input: $json.texto_base,\n      context: { acoes: $json.acoes || [] },\n      output_key: 'cronograma',\n      metadata: { proposal_id: $json.proposal_id || null, aba: $json.aba }\n    }\n  }\n}];"
+      },
+      "id": "6",
+      "name": "Config Cronograma",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.ia_request }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        }
+      },
+      "id": "7",
+      "name": "IA Gateway HTTP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        20,
+        0
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "1",
+          "name": "APIs Header Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.text || $json.response || $json.data || '';\nif (!raw) throw new Error('Resposta vazia da IA.');\nlet parsed = raw;\nif (typeof raw === 'string') {\n  const cleaned = raw.replace(/```json|```/g, '').trim();\n  try { parsed = JSON.parse(cleaned); } catch { parsed = { texto: cleaned }; }\n}\nreturn [{ json: { sucesso: true, resultado: parsed } }];"
+      },
+      "id": "8",
+      "name": "Normalizar Saída",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "9",
+      "name": "Responder",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        500,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"sucesso\": false,\n  \"erro\": \"Aba inválida para roteamento.\"\n}",
+        "options": {}
+      },
+      "id": "10",
+      "name": "Responder Aba Inválida",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        -240,
+        360
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook Entrada": {
+      "main": [
+        [
+          {
+            "node": "Validar Entrada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Entrada": {
+      "main": [
+        [
+          {
+            "node": "Switch Aba",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Aba": {
+      "main": [
+        [
+          {
+            "node": "Config Dados Gerais",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Config Requisitos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Config Cronograma",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder Aba Inválida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config Dados Gerais": {
+      "main": [
+        [
+          {
+            "node": "IA Gateway HTTP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config Requisitos": {
+      "main": [
+        [
+          {
+            "node": "IA Gateway HTTP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config Cronograma": {
+      "main": [
+        [
+          {
+            "node": "IA Gateway HTTP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IA Gateway HTTP": {
+      "main": [
+        [
+          {
+            "node": "Normalizar Saída",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar Saída": {
+      "main": [
+        [
+          {
+            "node": "Responder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7b7b4e35-fb02-44fa-afb7-ea904703801e",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "id": "4a04b9c6-4a58-4ed8-a796-78aed54f94f2",
+  "tags": [
+    {
+      "name": "arquitetura-otimizada"
+    }
+  ]
+}
