@@ -1,0 +1,1563 @@
+{
+  "name": "fluxo proposta com IA v2 - alinhado analises",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "compass-v2",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -816,
+        848
+      ],
+      "id": "9c71cb01-07ae-4517-a935-94f508db6cd4",
+      "name": "Requisitos e Cronograma",
+      "webhookId": "dee934b3-f2a2-4041-95ce-05cc9c9de886",
+      "notes": "Webhook v2 com autenticação por Header Auth e contrato versionado (schema_version)."
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================================\n// VALIDAÇÃO, SANITIZAÇÃO E CONTEXTO DE RASTREABILIDADE\n// ============================================================\n\nconst body = $input.first().json.body;\n\nif (!body) throw new Error('[Validação] Body da requisição está ausente.');\n\nconst aba = body.aba;\nif (!aba || typeof aba !== 'string') {\n  throw new Error('[Validação] Campo \"aba\" ausente ou inválido.');\n}\n\nconst abasPermitidas = ['requisitos', 'cronograma', 'dados_gerais'];\nif (!abasPermitidas.includes(aba)) {\n  throw new Error(`[Validação] Valor de \"aba\" não permitido: \"${aba}\".`);\n}\n\nfunction sanitize(value) {\n  if (typeof value === 'string') {\n    return value\n      .replace(/ignore (all |previous |above |prior )?instructions?/gi, '[REMOVIDO]')\n      .replace(/\bsystem\b.*?\bprompt\b/gi, '[REMOVIDO]')\n      .replace(/<[^>]{0,200}>/g, '')\n      .substring(0, 8000);\n  }\n  if (Array.isArray(value)) return value.map(sanitize);\n  if (typeof value === 'object' && value !== null) {\n    return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, sanitize(v)]));\n  }\n  return value;\n}\n\nconst sanitizedBody = sanitize(body);\n\nif (aba === 'dados_gerais') {\n  const campo = sanitizedBody?.dados?.campo;\n  const camposPermitidos = [\n    'project_description', 'current_situation', 'previous_approvals',\n    'scope_project', 'not_scope', 'alternatives_evaluated',\n    'risks_plan_mitigation', 'qualitative_gains', 'potential_gains',\n    'real_gains', 'financial_analytics', 'proposed_costs_notes'\n  ];\n  if (!campo || !camposPermitidos.includes(campo)) {\n    throw new Error(`[Validação] Campo \"dados.campo\" inválido: \"${campo}\"`);\n  }\n}\n\nif (aba === 'requisitos' && !sanitizedBody?.dados?.contexto?.dados_gerais) {\n  throw new Error('[Validação] \"dados.contexto.dados_gerais\" ausente para aba requisitos.');\n}\n\nif (aba === 'cronograma' && !sanitizedBody?.dados?.contexto?.requisitos) {\n  throw new Error('[Validação] \"dados.contexto.requisitos\" ausente para aba cronograma.');\n}\n\nconst request_id = sanitizedBody.request_id || $execution.id;\nconst proposal_id = sanitizedBody?.dados?.proposal_id || sanitizedBody?.proposal_id || 'nao_informado';\n\nreturn [{\n  body: {\n    ...sanitizedBody,\n    request_id,\n    proposal_id,\n    schema_version: sanitizedBody.schema_version || '2.0.0'\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -576,
+        848
+      ],
+      "id": "51412ec4-c2f0-4fe5-95e4-ed4bed37172b",
+      "name": "Validação e Sanitização",
+      "notes": "Validação central com sanitização, schema_version e metadados mínimos de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.aba }}",
+                    "rightValue": "requisitos",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "86c5f08e-eec8-4b5e-9d88-16e6611b9859"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5745dd0d-54ba-460f-ae93-e51feec81546",
+                    "leftValue": "={{ $json.body.aba }}",
+                    "rightValue": "dados_gerais",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -352,
+        848
+      ],
+      "id": "f68fac76-79ac-484f-8c63-636f7a3d667f",
+      "name": "abas",
+      "notes": "Roteador principal — agora recebe input sanitizado do nó de validação."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "773a0d49-bbc3-470c-b45f-ac27b877a589",
+              "leftValue": "={{ $json.body.dados.estado_atual.requisitos }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -80,
+        144
+      ],
+      "id": "2294fe71-d2c2-47e5-ad81-30df7d752119",
+      "name": "Requisitos: lista vazia?",
+      "notes": "FIX: Renomeado para clareza. True = sem requisitos existentes → gera do zero."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=Role\nVocê é um especialista em requisitos de negócio que analisa propostas e gera requisitos macro inéditos do zero. Seus requisitos serão avaliados por uma comissão executiva que decide aprovações com base em clareza de valor de negócio e alinhamento estratégico.\n\nTask\nAnalisar os dados gerais da proposta e gerar de 5 a 8 requisitos macro completamente novos, criados do zero com base exclusivamente no que os dados gerais revelam como lacunas ou capacidades de negócio ausentes.\n\nContext\nNão existem requisitos anteriores nesta etapa do fluxo. Sua missão é criar requisitos originais a partir da leitura dos dados gerais, identificando necessidades reais de negócio que ainda não foram cobertas por nenhuma especificação.\n\nInstructions\n\nProcesso de análise dos dados gerais (obrigatório antes de gerar):\n\n- Leia os dados gerais em busca de lacunas de negócio reais: regras de cálculo, validações específicas, fluxos de aprovação, integrações de dados, conformidade regulatória ou capacidades estratégicas ausentes.\n- Ignore infraestrutura técnica padrão — foque no que o negócio precisa fazer, não no que o sistema precisa ter.\n- Crie mentalmente uma lista dos temas que você mesmo já gerou durante a resposta. Se um conceito central já apareceu em um requisito anterior da mesma resposta, bloqueie variações dele.\n\nDiretrizes para cada requisito:\n\n- Descrição: máximo de 12 palavras, macro, focada no que o negócio ganha — proibido descrever interfaces ou detalhar o como.\n- criticidade: \"alta\", \"média\" ou \"baixa\".\n- esforço: número inteiro (horas).\n\nRegras obrigatórias de output:\n\n- Gerar no mínimo 5 e no máximo 8 requisitos.\n- Proibido repetir conceitos entre os requisitos gerados na mesma resposta.\n- Retornar exclusivamente JSON válido em uma única linha, sem markdown, sem explicações.\n- Utilizar exatamente as chaves: \"descrição\", \"criticidade\" e \"esforço\".\n\nEstrutura esperada:\n{\"requisito1\":{\"descrição\":\"texto macro e curto\",\"criticidade\":\"alta\",\"esforço\":0}}\n\nDados de Entrada:\nPROPOSTA: {{ JSON.stringify($json.body.dados.contexto.dados_gerais) }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-request-id",
+              "value": "={{ $json.body?.request_id || $json.observabilidade?.request_id || $execution.id }}"
+            },
+            {
+              "name": "x-proposal-id",
+              "value": "={{ $json.body?.proposal_id || $json.observabilidade?.proposal_id || \"nao_informado\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        -16
+      ],
+      "id": "26d0035b-721d-4132-9020-e0e3a6096874",
+      "name": "Requisitos sem requisitos",
+      "notes": "FIX: allowUnauthorizedCerts = false (SSL habilitado). Timeout reduzido para 90s. Retry habilitado com 3 tentativas e backoff de 2s. | Ajuste v2: timeout 45s + headers de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=Role\nVocê é um especialista em requisitos de negócio que analisa propostas e gera requisitos macro inéditos do zero. Seus requisitos serão avaliados por uma comissão executiva que decide aprovações com base em clareza de valor de negócio e alinhamento estratégico.\n\nTask\nAnalisar os dados gerais da proposta e gerar de 2 a 5 requisitos macro completamente novos, criados do zero com base exclusivamente no que os dados gerais revelam como lacunas ou capacidades de negócio ausentes.\n\nContext\nJá existem requisitos anteriores nesta proposta: {{ JSON.stringify($json.body.dados.estado_atual.requisitos) }}. Sua missão é criar apenas requisitos complementares e inéditos — não repita, não reescreva e não varie conceitos já cobertos pelos requisitos existentes acima.\n\nInstructions\n\n- Leia os dados gerais em busca de lacunas ainda não cobertas pelos requisitos existentes.\n- Ignore infraestrutura técnica padrão — foque no que o negócio precisa fazer.\n- Bloqueie variações de conceitos já existentes.\n\nDiretrizes para cada requisito:\n\n- Descrição: máximo de 12 palavras, macro, focada no que o negócio ganha.\n- criticidade: \"alta\", \"média\" ou \"baixa\".\n- esforço: número inteiro (horas).\n\nRegras obrigatórias de output:\n\n- Gerar no mínimo 2 e no máximo 5 requisitos.\n- Proibido repetir conceitos dos requisitos existentes ou entre os novos.\n- Retornar exclusivamente JSON válido em uma única linha, sem markdown, sem explicações.\n- Utilizar exatamente as chaves: \"descrição\", \"criticidade\" e \"esforço\".\n\nEstrutura esperada:\n{\"requisito1\":{\"descrição\":\"texto macro e curto\",\"criticidade\":\"alta\",\"esforço\":0}}\n\nDados de Entrada:\nPROPOSTA: {{ JSON.stringify($json.body.dados.contexto.dados_gerais) }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-request-id",
+              "value": "={{ $json.body?.request_id || $json.observabilidade?.request_id || $execution.id }}"
+            },
+            {
+              "name": "x-proposal-id",
+              "value": "={{ $json.body?.proposal_id || $json.observabilidade?.proposal_id || \"nao_informado\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        256
+      ],
+      "id": "d50dd394-e4b7-483f-be06-01fceb855589",
+      "name": "Requisitos com requisitos",
+      "notes": "FIX: allowUnauthorizedCerts = false. Timeout 90s. Retry 3x. Prompt ajustado para referenciar requisitos existentes explicitamente no contexto. | Ajuste v2: timeout 45s + headers de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst texto = input.response;\nconst meta = input.observabilidade || {};\n\nif (!texto) throw new Error(\"Campo 'response' não encontrado na entrada.\");\n\nlet parsed;\ntry {\n  const clean = String(texto).replace(/```json|```/g, '').trim();\n  parsed = JSON.parse(clean);\n} catch (error) {\n  throw new Error('Erro ao fazer parse do JSON da IA: ' + error.message);\n}\n\nconst requisitos = Object.values(parsed).map((r) => ({\n  descricao: r['descrição'],\n  criticidade: r['criticidade'],\n  esforco: r['esforço']\n}));\n\nreturn [{\n  resultado: { requisitos },\n  meta: {\n    ...meta,\n    finished_at: new Date().toISOString()\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        128
+      ],
+      "id": "e1a117ce-4d6e-4ae0-b935-cf16790b03ae",
+      "name": "Parse Requisitos",
+      "notes": "FIX: Limpeza de markdown adicionada antes do parse (consistente com o Code do dados_gerais)."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        704,
+        128
+      ],
+      "id": "9f98e694-8666-4e3e-87ce-7924c1e9c9f9",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "project_description",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "0a506a3f-0f7b-4193-8357-9ec173f4fdd7"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "26bfc29f-04f1-4845-937e-428a2d7e762e",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "current_situation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "1396f62e-6103-4403-9224-b560c7fa4b14",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "previous_approvals",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "59fa90e8-ac91-4091-9271-5af0600b9f6b",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "scope_project",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "07c54488-a72e-443e-b84d-13ce52a1220d",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "not_scope",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "80477a72-664f-4059-a6f8-9542232c1cc1",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "alternatives_evaluated",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "62fb6667-0381-4e84-9878-a5cfead70453",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "risks_plan_mitigation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3948e7b0-71f2-47ad-92d8-f967abb769ee",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "qualitative_gains",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b4e3e69b-d6d5-42d6-9af6-f826f7a46a12",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "potential_gains",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5c7ea867-9ade-4736-9de9-9a31f13cb46b",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "real_gains",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "24297414-6d04-4200-bcf8-f523d4b215fe",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "financial_analytics",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "807284a0-ba88-409d-9988-c46aacd37ec6",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "proposed_costs_notes",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        576,
+        1472
+      ],
+      "id": "f500db96-af87-44f5-baf5-38e120e25c89",
+      "name": "Switch",
+      "notes": "FIX: Removido '=' antes de valores literais (ex: '=previous_approvals' → 'previous_approvals' e '=not_scope' → 'not_scope'). Esses prefixos causavam falha silenciosa nas comparações."
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst rawResponse = input.response;\nconst meta = input.observabilidade || {};\n\ntry {\n  if (!rawResponse) throw new Error('A resposta da IA veio vazia');\n\n  const cleanData = String(rawResponse)\n    .replace(/```json|```/g, '')\n    .replace(/<[^>]*>/g, '')\n    .trim();\n\n  const parsed = JSON.parse(cleanData);\n\n  if (!parsed.campo && !parsed.conteudo) {\n    throw new Error('JSON retornado sem as chaves esperadas: campo/conteudo');\n  }\n\n  return [{\n    resultado: parsed,\n    meta: {\n      ...meta,\n      finished_at: new Date().toISOString()\n    }\n  }];\n} catch (e) {\n  throw new Error(`Falha ao processar resposta da IA | ${e.message}`);\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2128,
+        1616
+      ],
+      "id": "e3419370-8e73-4262-be7b-dfdeee861e73",
+      "name": "Parse Dados Gerais",
+      "notes": "FIX: Ao invés de retornar 'Erro de Formatação' silenciosamente, agora lança exceção para que o Error Handler capture e notifique. Adicionada validação de chaves obrigatórias."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"resultado\": { \"conteudo\": $json.conteudo } } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2336,
+        1616
+      ],
+      "id": "e2b14b78-ff31-4986-b945-d19761361bbc",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "const error = $input.first().json;\nconst errorMessage = error.message || error.error || 'Erro desconhecido';\nconst errorNode = error.node || 'nó desconhecido';\nconst timestamp = new Date().toISOString();\nconst requestId = error?.body?.request_id || error?.request_id || $execution.id;\n\nconsole.error(JSON.stringify({\n  timestamp,\n  nivel: 'ERROR',\n  request_id: requestId,\n  no: errorNode,\n  mensagem: errorMessage\n}));\n\nreturn [{\n  erro: true,\n  request_id: requestId,\n  timestamp,\n  mensagem: 'Ocorreu um erro ao processar a solicitação. Tente novamente.',\n  detalhe_interno: errorMessage\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2128,
+        1904
+      ],
+      "id": "30f50b9c-cd4e-4af8-8d42-91577a477512",
+      "name": "Error Handler Global",
+      "notes": "FIX: Nó central de tratamento de erros. Conecte o output de erro de todos os nós críticos aqui. Loga o erro e retorna resposta padronizada ao cliente."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"erro\": true, \"mensagem\": $json.mensagem } }}",
+        "options": {
+          "responseCode": 500
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2336,
+        1904
+      ],
+      "id": "a23635da-7a58-4a36-9f9e-17e9852af0a3",
+      "name": "Respond Error to Webhook",
+      "notes": "FIX: Retorna HTTP 500 com corpo de erro padronizado ao invés de timeout ou resposta vazia."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=**Situação**\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas em ambientes corporativos. Seu papel é garantir que o conteúdo enviado pelos usuários seja reescrito de forma profissional, clara e alinhado com o contexto específico de cada campo da proposta.\n \n**Tarefa**\nO assistente deve:\n1. Reescrever o conteúdo de forma objetiva e direta, expandindo as informações com detalhes relevantes que enriqueçam a compreensão sem excesso de palavras\n2. Adicionar contexto essencial e explicações que fortaleçam a proposta, justificando a necessidade do projeto\n3. Adaptar o nível de detalhe conforme o contexto do campo específico\n4. Retornar o resultado em formato JSON com a estrutura: {campo: string, conteudo: string}, onde o conteúdo deve ser apresentado em texto corrido, sem tópicos, listas ou formatação com pontos\n \nCampo:\n- **Descrição do projeto na linguagem do negócio**: Descrever o projeto focando em sua funcionalidade e impacto no negócio, evitando linguagem técnica de TI. Explicar o que o projeto faz, por que importa para a organização e como se integra aos objetivos estratégicos.\n\n**Instruções de Reformulação**\nExpanda o conteúdo recebido adicionando detalhes relevantes e contexto essencial, mantendo objetividade e clareza. Evitar redundâncias, floreios ou informações desnecessárias. Tom profissional, direto e persuasivo. Conteúdo exclusivamente em texto corrido, sem tópicos, listas, numerações ou qualquer formatação que quebre a continuidade do parágrafo.\n\nRetorne exclusivamente um objeto JSON válido em uma única linha, sem markdown:\n{ \"campo\": \"project_description\", \"conteudo\": \"valor_aqui\" }\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-request-id",
+              "value": "={{ $json.body?.request_id || $json.observabilidade?.request_id || $execution.id }}"
+            },
+            {
+              "name": "x-proposal-id",
+              "value": "={{ $json.body?.proposal_id || $json.observabilidade?.proposal_id || \"nao_informado\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1360,
+        608
+      ],
+      "id": "3d077d07-48c4-4ea5-b2f0-f79dfbefcf65",
+      "name": "Descrição do projeto",
+      "notes": "FIX: SSL habilitado. Timeout 90s. Retry 3x. Campo fixado como 'project_description' no prompt. | Ajuste v2: timeout 45s + headers de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=**Situação**\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas em ambientes corporativos.\n\nCampo:\n- **Situação atual - Problema a ser tratado/Resolvido**: Detalhar os problemas existentes no processo ou sistema atual, justificando por que o projeto é necessário. Incluir o impacto desses problemas nas operações, custos e eficiência com exemplos concretos.\n\n**Instruções**\nExpanda o conteúdo adicionando detalhes relevantes. Tom profissional, direto e persuasivo. Texto corrido, sem tópicos ou listas.\n\nRetorne exclusivamente JSON válido em uma única linha:\n{ \"campo\": \"current_situation\", \"conteudo\": \"valor_aqui\" }\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-request-id",
+              "value": "={{ $json.body?.request_id || $json.observabilidade?.request_id || $execution.id }}"
+            },
+            {
+              "name": "x-proposal-id",
+              "value": "={{ $json.body?.proposal_id || $json.observabilidade?.proposal_id || \"nao_informado\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1360,
+        752
+      ],
+      "id": "9fe48d91-7563-4fd5-8988-35deb21ffbce",
+      "name": "Situação atual",
+      "notes": "FIX: SSL habilitado. Timeout 90s. Retry 3x. | Ajuste v2: timeout 45s + headers de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=**Situação**\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas em ambientes corporativos.\n\nCampo:\n- **Aprovações Anteriores**: Para projetos complementares, descrever o que foi previamente aprovado, em quais fóruns, e referenciar as atas de aprovação. Detalhar como a proposta atual complementa aprovações anteriores.\n\n**Instruções**\nExpanda o conteúdo adicionando detalhes relevantes. Tom profissional, direto e persuasivo. Texto corrido, sem tópicos ou listas.\n\nRetorne exclusivamente JSON válido em uma única linha:\n{ \"campo\": \"previous_approvals\", \"conteudo\": \"valor_aqui\" }\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-request-id",
+              "value": "={{ $json.body?.request_id || $json.observabilidade?.request_id || $execution.id }}"
+            },
+            {
+              "name": "x-proposal-id",
+              "value": "={{ $json.body?.proposal_id || $json.observabilidade?.proposal_id || \"nao_informado\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1360,
+        928
+      ],
+      "id": "58c30724-e712-4be1-9f4d-dabcbe63cea8",
+      "name": "Aprovações Anteriores",
+      "notes": "FIX: SSL habilitado. Timeout 90s. Retry 3x. | Ajuste v2: timeout 45s + headers de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=**Situação**\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas em ambientes corporativos.\n\nCampo:\n- **Escopo do Projeto**: Listar os principais entregáveis e o que o projeto precisa realizar para ser considerado completo. Detalhar cada entregável com suas características e importância.\n\n**Instruções**\nExpanda o conteúdo adicionando detalhes relevantes. Tom profissional, direto e persuasivo. Texto corrido, sem tópicos ou listas.\n\nRetorne exclusivamente JSON válido em uma única linha:\n{ \"campo\": \"scope_project\", \"conteudo\": \"valor_aqui\" }\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-request-id",
+              "value": "={{ $json.body?.request_id || $json.observabilidade?.request_id || $execution.id }}"
+            },
+            {
+              "name": "x-proposal-id",
+              "value": "={{ $json.body?.proposal_id || $json.observabilidade?.proposal_id || \"nao_informado\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1360,
+        1104
+      ],
+      "id": "5a237181-ba36-4761-83f4-6ac3ba084462",
+      "name": "Escopo do Projeto",
+      "notes": "FIX: SSL habilitado. Timeout 90s. Retry 3x. | Ajuste v2: timeout 45s + headers de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=**Situação**\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas em ambientes corporativos.\n\nCampo:\n- **Não faz parte do Escopo do Projeto**: Explicitar claramente o que NÃO será endereçado, alinhando expectativas entre TI e Negócio. Justificar as exclusões e seus motivos.\n\n**Instruções**\nExpanda o conteúdo adicionando detalhes relevantes. Tom profissional, direto e persuasivo. Texto corrido, sem tópicos ou listas.\n\nRetorne exclusivamente JSON válido em uma única linha:\n{ \"campo\": \"not_scope\", \"conteudo\": \"valor_aqui\" }\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-request-id",
+              "value": "={{ $json.body?.request_id || $json.observabilidade?.request_id || $execution.id }}"
+            },
+            {
+              "name": "x-proposal-id",
+              "value": "={{ $json.body?.proposal_id || $json.observabilidade?.proposal_id || \"nao_informado\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1360,
+        1280
+      ],
+      "id": "e1d74f34-ca33-462f-965a-f9043962ef99",
+      "name": "Não faz parte do Escopo",
+      "notes": "FIX: SSL habilitado. Timeout 90s. Retry 3x. | Ajuste v2: timeout 45s + headers de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=**Situação**\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas em ambientes corporativos.\n\nCampo:\n- **Alternativas Avaliadas**: Descrever outras opções de sistema ou infraestrutura consideradas e descartadas, justificando a escolha proposta. Detalhar os critérios de avaliação.\n\n**Instruções**\nExpanda o conteúdo adicionando detalhes relevantes. Tom profissional, direto e persuasivo. Texto corrido, sem tópicos ou listas.\n\nRetorne exclusivamente JSON válido em uma única linha:\n{ \"campo\": \"alternatives_evaluated\", \"conteudo\": \"valor_aqui\" }\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-request-id",
+              "value": "={{ $json.body?.request_id || $json.observabilidade?.request_id || $execution.id }}"
+            },
+            {
+              "name": "x-proposal-id",
+              "value": "={{ $json.body?.proposal_id || $json.observabilidade?.proposal_id || \"nao_informado\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1360,
+        1472
+      ],
+      "id": "4d51e857-9bf7-41f0-9705-60bcf982290a",
+      "name": "Alternativas Avaliadas",
+      "notes": "FIX: SSL habilitado. Timeout 90s. Retry 3x. | Ajuste v2: timeout 45s + headers de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=**Situação**\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas em ambientes corporativos.\n\nCampo:\n- **Principais Riscos/Plano de Mitigação**: Identificar riscos relevantes para a decisão de aprovação e descrever o plano de mitigação com responsáveis definidos. Incluir probabilidade e impacto.\n\n**Instruções**\nExpanda o conteúdo adicionando detalhes relevantes. Tom profissional, direto e persuasivo. Texto corrido, sem tópicos ou listas.\n\nRetorne exclusivamente JSON válido em uma única linha:\n{ \"campo\": \"risks_plan_mitigation\", \"conteudo\": \"valor_aqui\" }\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-request-id",
+              "value": "={{ $json.body?.request_id || $json.observabilidade?.request_id || $execution.id }}"
+            },
+            {
+              "name": "x-proposal-id",
+              "value": "={{ $json.body?.proposal_id || $json.observabilidade?.proposal_id || \"nao_informado\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1360,
+        1648
+      ],
+      "id": "528792a9-9e90-4eb2-8b7b-bcd1120653ab",
+      "name": "Principais Riscos / Mitigação",
+      "notes": "FIX: SSL habilitado. Timeout 90s. Retry 3x. | Ajuste v2: timeout 45s + headers de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=**Situação**\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas em ambientes corporativos.\n\nCampo:\n- **Resultados Esperados (Qualitativos)**: Descrever benefícios não mensuráveis como qualidade de informações, segurança, acuracidade, agilidade e melhoria da imagem organizacional. Detalhar o impacto operacional de cada benefício.\n\n**Instruções**\nExpanda o conteúdo adicionando detalhes relevantes. Tom profissional, direto e persuasivo. Texto corrido, sem tópicos ou listas.\n\nRetorne exclusivamente JSON válido em uma única linha:\n{ \"campo\": \"qualitative_gains\", \"conteudo\": \"valor_aqui\" }\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-request-id",
+              "value": "={{ $json.body?.request_id || $json.observabilidade?.request_id || $execution.id }}"
+            },
+            {
+              "name": "x-proposal-id",
+              "value": "={{ $json.body?.proposal_id || $json.observabilidade?.proposal_id || \"nao_informado\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1360,
+        1840
+      ],
+      "id": "f51f6535-9b28-47df-addb-4aa131928b6a",
+      "name": "Resultados Qualitativos",
+      "notes": "FIX: SSL habilitado. Timeout 90s. Retry 3x. | Ajuste v2: timeout 45s + headers de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=**Situação**\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas em ambientes corporativos.\n\nCampo:\n- **Resultados Esperados (Ganhos Potenciais)**: Informar ganhos mensuráveis com valor e base de cálculo detalhada, incluindo valor mensal em moeda. Explicar as premissas utilizadas.\n\n**Instruções**\nExpanda o conteúdo adicionando detalhes relevantes. Tom profissional, direto e persuasivo. Texto corrido, sem tópicos ou listas.\n\nRetorne exclusivamente JSON válido em uma única linha:\n{ \"campo\": \"potential_gains\", \"conteudo\": \"valor_aqui\" }\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-request-id",
+              "value": "={{ $json.body?.request_id || $json.observabilidade?.request_id || $execution.id }}"
+            },
+            {
+              "name": "x-proposal-id",
+              "value": "={{ $json.body?.proposal_id || $json.observabilidade?.proposal_id || \"nao_informado\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1360,
+        2064
+      ],
+      "id": "2e9a9bb1-2e14-48fe-a901-8009c1007411",
+      "name": "Ganhos Potenciais",
+      "notes": "FIX: SSL habilitado. Timeout 90s. Retry 3x. | Ajuste v2: timeout 45s + headers de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=**Situação**\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas em ambientes corporativos.\n\nCampo:\n- **Resultados Esperados (Ganhos Reais)**: Descrever ganhos reais com valor, base de cálculo, conta contábil impactada e valor mensal em moeda. Detalhar como os ganhos serão mensurados.\n\n**Instruções**\nExpanda o conteúdo adicionando detalhes relevantes. Tom profissional, direto e persuasivo. Texto corrido, sem tópicos ou listas.\n\nRetorne exclusivamente JSON válido em uma única linha:\n{ \"campo\": \"real_gains\", \"conteudo\": \"valor_aqui\" }\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-request-id",
+              "value": "={{ $json.body?.request_id || $json.observabilidade?.request_id || $execution.id }}"
+            },
+            {
+              "name": "x-proposal-id",
+              "value": "={{ $json.body?.proposal_id || $json.observabilidade?.proposal_id || \"nao_informado\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1360,
+        2240
+      ],
+      "id": "9a161ef4-91ee-4049-b6ea-d19b66b2d632",
+      "name": "Ganhos Reais",
+      "notes": "FIX: SSL habilitado. Timeout 90s. Retry 3x. | Ajuste v2: timeout 45s + headers de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=**Situação**\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas em ambientes corporativos.\n\nCampo:\n- **Análise Financeira**: Apresentar indicadores financeiros do projeto como VPL (Valor Presente Líquido), TIR (Taxa Interna de Retorno), Payback e ROI. Detalhar as premissas e metodologia de cálculo utilizadas.\n\n**Instruções**\nExpanda o conteúdo adicionando detalhes relevantes. Tom profissional, direto e persuasivo. Texto corrido, sem tópicos ou listas.\n\nRetorne exclusivamente JSON válido em uma única linha:\n{ \"campo\": \"financial_analytics\", \"conteudo\": \"valor_aqui\" }\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-request-id",
+              "value": "={{ $json.body?.request_id || $json.observabilidade?.request_id || $execution.id }}"
+            },
+            {
+              "name": "x-proposal-id",
+              "value": "={{ $json.body?.proposal_id || $json.observabilidade?.proposal_id || \"nao_informado\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1360,
+        2432
+      ],
+      "id": "bec387ce-5cd6-46f6-95dd-5fc026225ebd",
+      "name": "Análise Financeira",
+      "notes": "FIX CRÍTICO: Prompt completamente reescrito. O original era idêntico ao 'Notas do Orçamento' (bug). Agora descreve corretamente Análise Financeira com VPL, TIR, Payback e ROI. | Ajuste v2: timeout 45s + headers de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=**Situação**\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas em ambientes corporativos.\n\nCampo:\n- **Notas do Orçamento**: Indicar se os valores incluem taxas e impostos. Detalhar a composição dos custos, origem das estimativas e premissas orçamentárias.\n\n**Instruções**\nExpanda o conteúdo adicionando detalhes relevantes. Tom profissional, direto e persuasivo. Texto corrido, sem tópicos ou listas.\n\nRetorne exclusivamente JSON válido em uma única linha:\n{ \"campo\": \"proposed_costs_notes\", \"conteudo\": \"valor_aqui\" }\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 45000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-request-id",
+              "value": "={{ $json.body?.request_id || $json.observabilidade?.request_id || $execution.id }}"
+            },
+            {
+              "name": "x-proposal-id",
+              "value": "={{ $json.body?.proposal_id || $json.observabilidade?.proposal_id || \"nao_informado\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1360,
+        2608
+      ],
+      "id": "810bfbdd-0a90-4152-a242-1b54b212cfd2",
+      "name": "Notas do Orçamento",
+      "notes": "FIX: SSL habilitado. Timeout 90s. Retry 3x. | Ajuste v2: timeout 45s + headers de rastreabilidade."
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = $input.first().json.body;\n\nconst startedAt = new Date().toISOString();\nconst observabilidade = {\n  request_id: payload.request_id,\n  proposal_id: payload.proposal_id,\n  aba: payload.aba,\n  schema_version: payload.schema_version,\n  started_at: startedAt\n};\n\nconsole.log(JSON.stringify({ nivel: 'INFO', evento: 'workflow_start', ...observabilidade }));\n\nreturn [{ body: payload, observabilidade }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -456,
+        688
+      ],
+      "id": "204907d5-7ca5-4211-9a19-5937e87d45ce",
+      "name": "Observabilidade e Contexto",
+      "notes": "Adiciona contexto de observabilidade para logs e propagação aos nós de IA."
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Requisitos e Cronograma": {
+      "main": [
+        [
+          {
+            "node": "Validação e Sanitização",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validação e Sanitização": {
+      "main": [
+        [
+          {
+            "node": "Observabilidade e Contexto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "abas": {
+      "main": [
+        [
+          {
+            "node": "Requisitos: lista vazia?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Requisitos: lista vazia?": {
+      "main": [
+        [
+          {
+            "node": "Requisitos sem requisitos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Requisitos com requisitos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Requisitos sem requisitos": {
+      "main": [
+        [
+          {
+            "node": "Parse Requisitos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Requisitos com requisitos": {
+      "main": [
+        [
+          {
+            "node": "Parse Requisitos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Requisitos": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Descrição do projeto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Situação atual",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Aprovações Anteriores",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Escopo do Projeto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Não faz parte do Escopo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Alternativas Avaliadas",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Principais Riscos / Mitigação",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resultados Qualitativos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ganhos Potenciais",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ganhos Reais",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Análise Financeira",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notas do Orçamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Dados Gerais": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Handler Global": {
+      "main": [
+        [
+          {
+            "node": "Respond Error to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Descrição do projeto": {
+      "main": [
+        [
+          {
+            "node": "Parse Dados Gerais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Situação atual": {
+      "main": [
+        [
+          {
+            "node": "Parse Dados Gerais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aprovações Anteriores": {
+      "main": [
+        [
+          {
+            "node": "Parse Dados Gerais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escopo do Projeto": {
+      "main": [
+        [
+          {
+            "node": "Parse Dados Gerais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Não faz parte do Escopo": {
+      "main": [
+        [
+          {
+            "node": "Parse Dados Gerais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alternativas Avaliadas": {
+      "main": [
+        [
+          {
+            "node": "Parse Dados Gerais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Principais Riscos / Mitigação": {
+      "main": [
+        [
+          {
+            "node": "Parse Dados Gerais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resultados Qualitativos": {
+      "main": [
+        [
+          {
+            "node": "Parse Dados Gerais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ganhos Potenciais": {
+      "main": [
+        [
+          {
+            "node": "Parse Dados Gerais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ganhos Reais": {
+      "main": [
+        [
+          {
+            "node": "Parse Dados Gerais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Análise Financeira": {
+      "main": [
+        [
+          {
+            "node": "Parse Dados Gerais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notas do Orçamento": {
+      "main": [
+        [
+          {
+            "node": "Parse Dados Gerais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Observabilidade e Contexto": {
+      "main": [
+        [
+          {
+            "node": "abas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "88118a87-f3a2-4668-ae44-0bca8de97b28",
+  "meta": {
+    "instanceId": "5cf0849f695b944e2c3d530f4b618a0c5fc10f811c4f60c443e40e66ab1065d9"
+  },
+  "id": "jwfS6hGkPUBo4xwPCzojW",
+  "tags": []
+}
