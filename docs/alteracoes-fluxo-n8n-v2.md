@@ -82,3 +82,7 @@
 2. Medir latência por aba e taxa de erro por tipo de campo.
 3. Definir SLO (tempo de resposta e disponibilidade).
 4. Evoluir para processamento assíncrono caso o volume aumente.
+
+
+## Documento complementar
+- Guia detalhado de migração backend: `docs/migracao-backend-para-n8n-v2.md`.
