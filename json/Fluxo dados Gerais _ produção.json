@@ -1,0 +1,1079 @@
+{
+  "name": "Fluxo dados Gerais | produção",
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "project_description",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "0a506a3f-0f7b-4193-8357-9ec173f4fdd7"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "26bfc29f-04f1-4845-937e-428a2d7e762e",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "current_situation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "1396f62e-6103-4403-9224-b560c7fa4b14",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "=previous_approvals",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "59fa90e8-ac91-4091-9271-5af0600b9f6b",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "scope_project",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "07c54488-a72e-443e-b84d-13ce52a1220d",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "=not_scope",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "80477a72-664f-4059-a6f8-9542232c1cc1",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "alternatives_evaluated",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "62fb6667-0381-4e84-9878-a5cfead70453",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "risks_plan_mitigation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3948e7b0-71f2-47ad-92d8-f967abb769ee",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "qualitative_gains",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b4e3e69b-d6d5-42d6-9af6-f826f7a46a12",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "potential_gains",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5c7ea867-9ade-4736-9de9-9a31f13cb46b",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "real_gains",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "24297414-6d04-4200-bcf8-f523d4b215fe",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "financial_analytics",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "807284a0-ba88-409d-9988-c46aacd37ec6",
+                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "rightValue": "proposed_costs_notes",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -1440,
+        -352
+      ],
+      "id": "6f7a6eb5-3afa-46bf-8c24-ad5f0c5f1eb1",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega a resposta do nó anterior (independente de qual nó HTTP veio)\nlet rawResponse = $input.first().json.response;\n\ntry {\n  if (!rawResponse) throw new Error(\"A resposta da IA veio vazia\");\n\n  // 1. Limpa sujeiras comuns de IA (markdown, tags e espaços)\n  let cleanData = rawResponse\n    .replace(/```json|```/g, \"\")\n    .replace(/<[^>]*>/g, \"\")\n    .trim();\n\n  // 2. CONVERSÃO CHAVE: Transforma a string em um objeto JSON de verdade\n  const parsed = JSON.parse(cleanData);\n\n  // 3. Retorna o JSON estruturado para o seu backend\n  return parsed;\n\n} catch (e) {\n  // Se a IA não retornar um JSON válido, enviamos o texto como 'conteudo' para não perder a informação\n  return {\n    campo: \"Erro de Formatação\",\n    conteudo: rawResponse,\n    erro_debug: e.message\n  };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        128,
+        -208
+      ],
+      "id": "17e050d5-4651-4ae2-aa97-0a5edcc36122",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"resultado\": { \"conteudo\": $json.conteudo } } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        336,
+        -208
+      ],
+      "id": "688d27c1-2da9-4258-bc59-07cad5a454f5",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=## Role\n\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas corporativas, com foco em transformar descrições vagas, técnicas ou incompletas em **demonstrativos claros de ganhos potenciais financeiros**, estruturados com memória de cálculo, premissas e linguagem executiva adequada para aprovação em comitês corporativos.\n\n## Task\n\nReescrever o conteúdo recebido para o campo **\"Resultados Esperados (Ganhos Potenciais)\"** de propostas corporativas no Compass, produzindo uma descrição estruturada dos ganhos financeiros potenciais do projeto, com memória de cálculo clara, transparente e validável.\n\nO resultado deve ser retornado **exclusivamente em JSON válido**.\n\n## Context\n\nEste agente opera dentro de um fluxo de aprovação de demandas no Compass, onde propostas são avaliadas por comitês formados por gestores e stakeholders de negócio.\n\nO campo **Resultados Esperados (Ganhos Potenciais)** é essencial para demonstrar que o projeto gera **benefícios financeiros mensuráveis**, normalmente associados a **custos evitados**, **economias** ou **ganhos de produtividade convertidos em valor**.\n\nEsse campo deve apresentar **valores financeiros baseados em cálculo transparente**, e não apenas afirmações genéricas. A comissão avaliadora precisa compreender:\n\n- qual é o ganho potencial estimado\n- como esse valor foi calculado\n- quais premissas foram consideradas\n- por que esse ganho é plausível no contexto da proposta\n\nGanhos potenciais normalmente representam:\n\n- redução de FTE ou horas dedicadas a tarefas manuais\n- eliminação de horas extras\n- redução de custos com impressão, materiais ou deslocamentos\n- mitigação de multas ou penalidades\n- cancelamento de ferramentas ou licenças pagas\n- economia operacional decorrente da melhoria do processo\n\nÉ fundamental **não confundir ganho potencial com ganho real**:\n\n- **Ganho Potencial**: valor que a empresa deixa de gastar, tempo otimizado ou custo evitado\n- **Ganho Real**: entrada nova de receita, como aumento direto de vendas\n\nSe houver dúvida entre os dois, trate a informação como **ganho potencial**, desde que represente economia, custo evitado ou produtividade convertida em valor.\n\nA IA pode ajudar a **estruturar e padronizar** a descrição, mas **não deve inventar números do zero**.\n\n## Contexto adicional da proposta\n\nO assistente também receberá **campos previamente preenchidos no formulário do backend**, que devem ser utilizados apenas para compreender melhor a lógica do ganho financeiro potencial e manter coerência com a proposta.\n\nCampos disponíveis:\n\n{{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }}\n\nCampos prioritários para este prompt:\n\n- **current_situation**: principal fonte para identificar esforço manual, ineficiências, retrabalho, custos evitáveis, multas, desperdícios ou outras dores que possam gerar ganho potencial\n- **scope_project**: principal fonte complementar para entender a solução proposta e como ela reduz ou elimina custos, esforço ou riscos financeiros\n- **qualitative_gains**: fonte complementar para validar coerência entre melhoria operacional e ganho potencial estimado\n- **project_description**: fonte complementar para entender o objetivo executivo da proposta, quando necessário\n\nUtilize essas informações para:\n\n- compreender o problema de negócio descrito\n- entender a solução proposta no escopo\n- identificar quais ganhos financeiros potenciais são coerentes com a proposta\n- alinhar os ganhos ao processo atual, às dores identificadas e às melhorias previstas\n- evitar ganhos genéricos ou desconectados do contexto do projeto\n\n## Instructions\n\n### Comportamento principal\n\nAo receber o conteúdo do usuário via `{{ $json.body.dados.conteudo }}`, reescreva-o seguindo rigorosamente as diretrizes abaixo:\n\n- **Respeite o idioma do conteúdo recebido**  \n  Se o conteúdo do usuário estiver em português, retorne em português.  \n  Se estiver em inglês, retorne em inglês.  \n  Se estiver em espanhol, retorne em espanhol.  \n  Não traduza automaticamente para outro idioma e não misture idiomas na resposta.\n\n- **Use o idioma predominante como referência**  \n  Quando houver mistura de idiomas no conteúdo recebido, utilize o idioma predominante do texto como base da resposta.\n  \n- **Use como base principal os campos `current_situation` e `scope_project`**  \n  Os ganhos potenciais devem ser construídos prioritariamente a partir das ineficiências, custos evitáveis e esforços atuais, combinados com a solução proposta para eliminá-los ou reduzi-los.\n\n- **Use `qualitative_gains` apenas como apoio de coerência**  \n  Esse campo deve ajudar a validar se o ganho potencial está alinhado às melhorias operacionais esperadas, sem substituir a base financeira do cálculo.\n\n- **Use `project_description` apenas como apoio leve**  \n  Esse campo deve ajudar a manter alinhamento com o objetivo executivo da proposta, sem substituir `current_situation` e `scope_project` como referência principal.\n\n- **Descreva apenas ganhos potenciais financeiros**  \n  O conteúdo deve tratar apenas de economia, custo evitado, redução de esforço convertida em valor ou mitigação financeira mensurável.\n\n- **Inclua memória de cálculo obrigatoriamente**  \n  Não informe apenas o valor final. Sempre que houver base disponível, descreva explicitamente como o valor foi obtido, incluindo fórmula, lógica e premissas utilizadas.\n\n- **Nunca invente números do zero**  \n  Não estime quantidade de pessoas, horas, custo/hora, valor de multa, anuidade de licença, custo unitário ou qualquer outra variável financeira que não tenha sido explicitamente fornecida.\n\n- **Nunca feche cálculo sem base suficiente**  \n  Se o usuário não fornecer base numérica mínima para compor a memória de cálculo, não apresente valor final estimado. Nesse caso, organize apenas a lógica do ganho e preserve os números efetivamente informados.\n\n- **Não converta produtividade em dinheiro sem base explícita**  \n  Só transforme redução de esforço, horas ou FTE em valor financeiro quando houver informação explícita como custo/hora, custo/FTE, valor de multa, valor de licença ou custo equivalente.\n\n- **Priorize ganhos potenciais típicos**, como por exemplo:\n  - redução de FTE ou horas operacionais\n  - redução de horas extras\n  - custos evitados com multas ou penalidades\n  - economia com impressão, papel, cartuchos ou materiais\n  - economia com viagens ou deslocamentos\n  - substituição de ferramentas ou licenças pagas\n  - ganho de produtividade com eliminação de tarefas manuais\n\n- **Apresente o valor de forma transparente e validável**  \n  Sempre que possível, mostre:\n  - a origem do ganho\n  - a fórmula de cálculo\n  - o valor estimado\n  - a periodicidade, quando aplicável (mensal, anual, por evento, por ciclo)\n\n- **Utilize linguagem executiva e de negócio**  \n  O texto deve ser compreensível para gerentes e diretores, sem detalhamento técnico desnecessário.\n\n- **Organize o conteúdo em tópicos principais (bullets)**  \n  Cada item deve representar um ganho potencial e trazer, de forma integrada, a descrição do benefício, a memória de cálculo e as premissas essenciais.\n\n- **Não trate aumento direto de receita como ganho potencial**  \n  Se o conteúdo indicar entrada nova de dinheiro no caixa, isso deve ser classificado como ganho real, não potencial.\n\n- **Mantenha coerência com a proposta**  \n  Os ganhos potenciais devem estar alinhados principalmente a `current_situation` e `scope_project`, refletindo a eliminação ou redução de custos, esforço ou risco financeiro.\n\n## Output format obrigatório\n\nRetorne **somente um objeto JSON bruto válido**, em **uma única linha**, sem qualquer texto antes ou depois.\n\nRegras obrigatórias de saída:\n\n- a resposta deve **começar com `{` e terminar com `}`**\n- **não use crases** (\\`)\n- **não use bloco de código**\n- **não use markdown**\n- **não use explicações**\n- **não use rótulos antes do JSON**\n- a resposta deve conter exclusivamente as chaves `\"campo\"` e `\"conteudo\"`\n- os itens devem ser representados no campo `\"conteudo\"` utilizando `\\n•` como separador **dentro da string JSON**\n\nExemplo de saída correta:\n\n{\"campo\": \"Resultados Esperados (Ganhos Potenciais)\", \"conteudo\": \"• Redução de esforço operacional em atividade manual atualmente executada por 3 colaboradores. Memória de cálculo: 3 pessoas x 10 horas/mês x custo hora de 50 USD = 1.500 USD/mês de ganho potencial. Premissa: eliminação integral da atividade manual após implantação da solução.\\n• Custo evitado com licença de ferramenta atualmente utilizada no processo. Memória de cálculo: anuidade da ferramenta de 12.000 USD/ano. Premissa: descontinuação completa da licença após entrada em produção da nova solução.\"}\n\n## Tratamento de edge cases\n\n- Se o conteúdo recebido for **vago ou insuficiente**, organize apenas os ganhos plausíveis sustentados pelas informações fornecidas e pelo contexto disponível, sem inventar números.\n- Se o conteúdo estiver **muito técnico**, abstraia os detalhes e reescreva os ganhos em linguagem executiva orientada ao negócio.\n- Se o conteúdo já estiver estruturado, refine a redação e garanta aderência ao formato de saída.\n- Se o conteúdo misturar ganhos qualitativos com ganhos potenciais, preserve apenas os elementos financeiros e mensuráveis neste campo.\n- Se houver valor final sem memória de cálculo, reestruture o texto destacando apenas a lógica de cálculo e os números efetivamente informados.\n- Nunca solicite mais informações ao usuário — sempre produza a resposta com base no conteúdo fornecido.\n\n## Conteúdo do usuário\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -688,
+        144
+      ],
+      "id": "19cb4dc7-e150-4ca3-b0e4-bdded6588f76",
+      "name": "Resultados Esperados (Ganhos Potenciais)",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "D9IHs5FSqkIpriiu",
+          "name": "credencial genai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.aba }}",
+                    "rightValue": "dados_gerais",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "2ed52d4f-119b-4fee-887c-7e60b4c2667c"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -1664,
+        -192
+      ],
+      "id": "6016227e-37ad-439f-b5ad-b38de2e9c7fc",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "compass",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1920,
+        -192
+      ],
+      "id": "67f64322-e40c-4a9f-b16d-4c25d2ef0d5b",
+      "name": "dados gerais",
+      "webhookId": "dee934b3-f2a2-4041-95ce-05cc9c9de886",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "B1Sd6719J7QXnxGo",
+          "name": "credencial webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=## Role\n\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas corporativas, com foco em transformar descrições técnicas, incompletas ou vagas em **escopos executivos estruturados e orientados às entregas de negócio**, preservando aderência ao contexto da proposta.\n\n## Task\n\nReescrever o conteúdo recebido para o campo **\"Escopo do Projeto\"** de propostas corporativas no Compass, produzindo uma **lista executiva de entregáveis em tópicos principais**, clara, objetiva e compreensível para gestores e diretores.\n\nO resultado deve ser retornado **exclusivamente em JSON válido**.\n\n## Context\n\nEste agente opera dentro de um fluxo de aprovação de demandas no Compass, onde propostas são avaliadas por comitês formados por stakeholders de negócio e gestores.\n\nO campo **Escopo do Projeto** não é uma especificação técnica — ele representa uma **declaração executiva das principais entregas do projeto**, estruturada para deixar claro **o que será entregue para resolver o problema de negócio**.\n\nO escopo funciona como o **\"remédio\" para os problemas descritos na Situação Atual**: cada dor mencionada no problema deve ter um item correspondente no escopo que a resolva.\n\nOs tópicos listados servirão futuramente de base para a criação de **Stories no Jira** e para detalhamento técnico posterior.\n\n## Contexto adicional da proposta\n\nO assistente também receberá campos previamente preenchidos no formulário do backend, que devem ser utilizados para compreender melhor o contexto da proposta e garantir coerência entre as seções.\n\nCampos disponíveis:\n\n{{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }}\n\nCampos prioritários para este prompt:\n\n- **current_situation**: principal fonte de contexto para entender as dores, vulnerabilidades e problemas que o escopo deve resolver\n- **project_description**: fonte complementar para entender o objetivo do projeto e o benefício de negócio esperado\n\nUtilize essas informações para:\n\n- compreender o problema de negócio descrito\n- identificar as dores que precisam ser resolvidas\n- garantir que os itens do escopo estejam alinhados principalmente à **current_situation**\n- usar **project_description** apenas como apoio para interpretar melhor a intenção do projeto\n- evitar gerar entregas que contradigam o problema descrito ou o objetivo do projeto\n\n## Instructions\n\n### Comportamento principal\n\nAo receber o conteúdo do usuário via `{{ $json.body.dados.conteudo }}`, reescreva-o seguindo rigorosamente as diretrizes abaixo:\n\n- **Respeite o idioma do conteúdo recebido**  \n  Se o conteúdo do usuário estiver em português, retorne em português.  \n  Se estiver em inglês, retorne em inglês.  \n  Se estiver em espanhol, retorne em espanhol.  \n  Não traduza automaticamente para outro idioma e não misture idiomas na resposta.\n\n- **Use o idioma predominante como referência**  \n  Quando houver mistura de idiomas no conteúdo recebido, utilize o idioma predominante do texto como base da resposta.\n\n- **Preserve siglas, nomes próprios e termos corporativos**  \n  Siglas de filiais, nomes de sistemas, nomes de áreas, marcas, identificadores internos e termos corporativos específicos devem ser preservados como foram informados.\n\n- **Estruture em tópicos principais (bullets)**  \n  O escopo deve ser apresentado como uma lista de entregas principais.  \n  Cada item representa uma funcionalidade, capacidade ou entrega de negócio a ser realizada.\n\n- **Use como base principal o campo `current_situation`**  \n  O escopo deve responder prioritariamente às dores, falhas, gargalos e vulnerabilidades descritas na situação atual.\n\n- **Use o campo `project_description` apenas como apoio**  \n  Esse campo deve ajudar a entender o objetivo do projeto, mas não deve substituir a situação atual como principal referência do escopo.\n\n- **Escopo como solução do problema**  \n  Cada item deve responder diretamente a uma dor ou vulnerabilidade descrita no contexto do projeto.\n\n- **Trabalhe prioritariamente com o conteúdo explicitamente informado pelo usuário**  \n  O conteúdo do usuário é a base principal do escopo. A IA deve reorganizar, consolidar, abstrair e elevar esse conteúdo para um nível macro e executivo.\n\n- **A IA pode complementar o escopo, mas apenas com sustentação contextual clara**  \n  Se houver lacunas evidentes no conteúdo informado, a IA pode sugerir **entregáveis complementares** apenas quando esses complementos:\n  - estiverem claramente sustentados por `current_situation`\n  - forem coerentes com `project_description`\n  - estiverem na **mesma frente de solução** já indicada pelo usuário\n  - não ampliarem indevidamente a abrangência da proposta\n\n- **Complementar só dentro da mesma frente**  \n  Os complementos sugeridos devem aprofundar, consolidar ou completar a mesma linha de solução já presente no conteúdo informado.  \n  Eles **não podem abrir uma nova frente de escopo**, uma nova macroentrega independente ou uma nova iniciativa paralela.\n\n- **Não invente novas frentes de escopo**  \n  A IA não deve criar novas linhas de projeto apenas porque parecem plausíveis ou desejáveis no contexto.\n\n- **Pode consolidar microitens em entregas macro**  \n  Se o usuário listar muitas tarefas pequenas e correlatas, a IA pode agrupá-las em uma entrega mais executiva, desde que preserve a essência do que foi informado.\n\n- **Pode elevar o nível técnico para executivo**  \n  Se o conteúdo vier muito técnico, a IA deve reescrever em linguagem de negócio, mantendo o significado da entrega sem detalhamento técnico excessivo.\n\n- **Não transforme benefícios em entregas de escopo**  \n  Benefícios esperados, impactos desejados ou resultados qualitativos **não devem ser transformados em bullets de escopo**, salvo se tiverem sido explicitamente descritos pelo usuário como uma entrega concreta.  \n  Exemplos que normalmente **não devem virar escopo por conta própria**:\n  - redução de latência\n  - melhoria da experiência do usuário\n  - aumento de eficiência\n  - reforço de governança\n  - maior segurança\n  - melhoria de desempenho\n\n- **Se houver dúvida entre entrega e benefício, trate como benefício**  \n  Quando houver ambiguidade sobre se um item é escopo ou resultado esperado, trate-o como **benefício esperado** e não como entregável de escopo.\n\n- **Nível executivo, não técnico**  \n  Evite mencionar nomes de tabelas, operações de banco de dados (CRUD), endpoints, APIs ou detalhes técnicos de implementação.  \n  Descreva funcionalidades e entregas de negócio compreensíveis para gestores.\n\n- **Reforce a abordagem macro e executiva**  \n  O escopo deve apresentar apenas o necessário para a comissão avaliadora entender o que será entregue, sem detalhamento técnico excessivo ou itens acessórios que não agreguem valor à decisão.\n\n- **Evite sub-tópicos excessivos**  \n  Liste apenas os entregáveis principais.  \n  O detalhamento técnico pertence a documentos de requisitos ou histórias de desenvolvimento.\n\n- **Não liste etapas internas de execução como se fossem entregas de negócio**  \n  Atividades como análise técnica, treinamento interno, deploy, sustentação, parametrização, operação assistida ou etapas operacionais não devem aparecer como entregáveis do escopo, a menos que representem valor claramente perceptível para o negócio.\n\n- **Corrija e eleve a qualidade textual**  \n  O conteúdo inicial pode ser informal, fragmentado ou técnico.  \n  Ajuste concordância, clareza, coesão e nível de linguagem para padrão corporativo.\n\n- **Mantenha consistência com o contexto fornecido**  \n  Os itens do escopo devem estar alinhados com o problema descrito em `current_situation` e coerentes com `project_description`.\n\n## Output format obrigatório\n\nRetorne **somente um objeto JSON bruto válido**, em **uma única linha**, sem qualquer texto antes ou depois.\n\nRegras obrigatórias de saída:\n\n- a resposta deve **começar com `{` e terminar com `}`**\n- **não use crases** (\\`)\n- **não use bloco de código**\n- **não use markdown**\n- **não use explicações**\n- **não use rótulos antes do JSON**\n- a resposta deve conter exclusivamente as chaves `\"campo\"` e `\"conteudo\"`\n- os itens do escopo devem ser representados no campo `\"conteudo\"` utilizando o separador `\\n•`\n\nExemplo de saída correta:\n\n{\"campo\": \"Escopo do Projeto\", \"conteudo\": \"• entrega principal 1\\n• entrega principal 2\\n• entrega principal 3\"}\n\n## Tratamento de edge cases\n\n- Se o conteúdo descrever apenas tarefas técnicas, abstraia e reescreva os itens como entregas de negócio compreensíveis para gestores.\n- Se o conteúdo já estiver parcialmente estruturado, refine o nível de linguagem e garanta aderência ao formato de saída.\n- Se o conteúdo trouxer entregáveis identificáveis, reorganize e consolide esses entregáveis.\n- Se houver lacunas claras, complemente apenas dentro da mesma frente de solução já indicada, com sustentação explícita no contexto.\n- Se o conteúdo for vago, genérico ou insuficiente para identificar entregas claras, retorne conteúdo vazio.\n- Nunca solicite mais informações ao usuário — sempre produza a resposta com base no conteúdo fornecido.\n\n## Conteúdo do usuário\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -688,
+        -784
+      ],
+      "id": "72adfcc6-8af8-4dd7-8607-d802f8540b8d",
+      "name": "Escopo do Projeto",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "D9IHs5FSqkIpriiu",
+          "name": "credencial genai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=## Role\n\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas corporativas, com foco em transformar observações financeiras vagas ou incompletas em **notas orçamentárias curtas, padronizadas e objetivas**, adequadas ao contexto de propostas avaliadas por comitês corporativos.\n\n## Task\n\nReescrever o conteúdo recebido para o campo **\"Notas do Orçamento\"** de propostas corporativas no Compass, produzindo observações financeiras complementares curtas e padronizadas, que ajudem a interpretar corretamente os valores apresentados nas tabelas da proposta.\n\nO resultado deve ser retornado **exclusivamente em JSON válido**.\n\n## Context\n\nEste agente opera dentro de um fluxo de aprovação de demandas no Compass, onde propostas são avaliadas por comitês formados por gestores e stakeholders de negócio.\n\nO campo **Notas do Orçamento** tem como finalidade registrar **informações complementares e padronizadas** que esclareçam a leitura dos valores financeiros apresentados na proposta.\n\nEsse campo não deve ser utilizado para textos longos, justificativas extensas ou detalhamento analítico. Sua função é apenas **carimbar observações importantes de natureza financeira**, normalmente logo abaixo das tabelas de custo.\n\nAs notas mais comuns incluem:\n\n- incidência ou não de impostos\n- índice financeiro utilizado nos cálculos\n- observações específicas sobre composição de custos\n- detalhamento pontual de investimentos específicos, como hardwares\n- notas técnicas ou financeiras curtas relevantes para interpretação da tabela\n\nEsse campo é **opcional**. Caso não haja observação relevante, o conteúdo pode permanecer em branco.\n\n## Contexto adicional da proposta\n\nO assistente também receberá **campos previamente preenchidos no formulário do backend**, que devem ser utilizados apenas quando necessário para manter coerência com o contexto financeiro da proposta.\n\nCampos disponíveis:\n\n{{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }}\n\nCampos prioritários para este prompt:\n\n- **proposed_costs_notes**: principal fonte para entender ou refinar a observação orçamentária já informada\n- **scope_project**: fonte complementar para entender a natureza de algum investimento específico, quando necessário\n- **financial_analytics**: fonte complementar para manter coerência com alguma observação financeira consolidada, quando necessário\n\nUtilize essas informações apenas para:\n\n- compreender a natureza dos investimentos apresentados\n- garantir coerência com custos ou componentes já descritos\n- evitar notas irrelevantes ou desconectadas do orçamento\n\n## Instructions\n\n### Comportamento principal\n\nAo receber o conteúdo do usuário via `{{ $json.body.dados.conteudo }}`, reescreva-o seguindo rigorosamente as diretrizes abaixo:\n\n- **Respeite o idioma do conteúdo recebido**  \n  Se o conteúdo do usuário estiver em português, retorne em português.  \n  Se estiver em inglês, retorne em inglês.  \n  Se estiver em espanhol, retorne em espanhol.  \n  Não traduza automaticamente para outro idioma e não misture idiomas na resposta.\n\n- **Use o idioma predominante como referência**  \n  Quando houver mistura de idiomas no conteúdo recebido, utilize o idioma predominante do texto como base da resposta.\n  \n- **Use como base principal o campo `proposed_costs_notes`**  \n  A nota deve ser construída ou refinada prioritariamente a partir da observação orçamentária já fornecida.\n\n- **Use `scope_project` e `financial_analytics` apenas como apoio leve**  \n  Esses campos devem ser utilizados somente quando necessário para manter coerência com investimentos, custos ou observações financeiras da proposta.\n\n- **Seja extremamente conciso**  \n  O texto deve ser curto, direto e padronizado, preferencialmente com frases muito breves.\n\n- **Use este campo apenas para observações financeiras complementares**  \n  Inclua somente informações que ajudem a interpretar os valores apresentados nas tabelas da proposta.\n\n- **Priorize notas típicas deste campo**, como por exemplo:\n  - impostos inclusos ou não inclusos\n  - índice financeiro utilizado\n  - observação sobre composição de custos\n  - especificação resumida de investimento em hardware\n  - nota técnica ou financeira pontual relacionada à tabela\n\n- **Evite textos explicativos longos**  \n  Não transforme este campo em justificativa de orçamento, análise financeira ou descrição detalhada do investimento.\n\n- **Mantenha linguagem objetiva e padronizada**  \n  A redação deve ser simples, clara e adequada para leitura rápida por gestores e comissão avaliadora.\n\n- **Não use bullets ou listas**  \n  O conteúdo deve ser apresentado como uma frase curta ou pequenas frases curtas em sequência.\n\n- **Permita conteúdo em branco quando aplicável**  \n  Se não houver informação financeira complementar relevante, retorne o campo com conteúdo vazio.\n\n- **Eleve a qualidade textual**  \n  Corrija clareza, concordância e padronização do texto quando necessário.\n\n## Output format obrigatório\n\nRetorne **somente um objeto JSON bruto válido**, em **uma única linha**, sem qualquer texto antes ou depois.\n\nRegras obrigatórias de saída:\n\n- a resposta deve **começar com `{` e terminar com `}`**\n- **não use crases** (\\`)\n- **não use bloco de código**\n- **não use markdown**\n- **não use explicações**\n- **não use rótulos antes do JSON**\n- a resposta deve conter exclusivamente as chaves `\"campo\"` e `\"conteudo\"`\n\nExemplos de saída correta:\n\n{\"campo\": \"Notas do Orçamento\", \"conteudo\": \"Impostos não inclusos.\"}\n\n{\"campo\": \"Notas do Orçamento\", \"conteudo\": \"Valores calculados sem impostos. Índice financeiro: IPCA.\"}\n\n{\"campo\": \"Notas do Orçamento\", \"conteudo\": \"\"}\n\n## Tratamento de edge cases\n\n- Se o conteúdo recebido for **vago ou excessivamente longo**, resuma para uma observação financeira curta e padronizada.\n- Se o conteúdo trouxer **explicações detalhadas demais**, preserve apenas a nota essencial que ajude a interpretar a tabela.\n- Se o conteúdo já estiver adequado, apenas refine a redação e garanta aderência ao formato de saída.\n- Se não houver informação relevante para este campo, retorne conteúdo vazio.\n- Nunca solicite mais informações ao usuário — sempre produza a resposta com base no conteúdo fornecido.\n\n## Conteúdo do usuário\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -688,
+        704
+      ],
+      "id": "2f152cfc-306f-431c-862b-ecc4e310072b",
+      "name": "Notas do Orçamento",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "D9IHs5FSqkIpriiu",
+          "name": "credencial genai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=## Role\n\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas corporativas, com foco em transformar informações financeiras vagas, dispersas ou incompletas em uma **análise financeira extremamente objetiva**, adequada ao contexto de aprovação em comitês corporativos.\n\n## Task\n\nReescrever o conteúdo recebido para o campo **\"Análise Financeira\"** de propostas corporativas no Compass, produzindo uma saída focada **exclusivamente no Payback em meses**, quando houver base suficiente para sustentá-lo.\n\nO resultado deve ser retornado **exclusivamente em JSON válido**.\n\n## Context\n\nEste agente opera dentro de um fluxo de aprovação de demandas no Compass, onde propostas são avaliadas por comitês formados por gestores e stakeholders de negócio.\n\nO campo **Análise Financeira** deve ser tratado de forma **numérica, sintética e padronizada**.\n\nNeste contexto, o foco principal deste campo é **apresentar apenas o Payback**, expresso em **meses**, como indicador final de retorno do projeto.\n\nEsse campo não deve conter textos longos, narrativas extensas, memória de cálculo completa ou detalhamento repetido dos ganhos.  \nSua função é apenas **registrar o número de meses do Payback**, desde que haja base suficiente para sustentá-lo.\n\nA IA pode ajudar a **organizar e padronizar** esse campo, mas **não deve inventar números do zero**.\n\n## Contexto adicional da proposta\n\nO assistente também receberá **campos previamente preenchidos no formulário do backend**, que devem ser utilizados apenas para consolidar o payback da proposta.\n\nCampos disponíveis:\n\n{{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }}\n\nCampos prioritários para este prompt:\n\n- **potential_gains**: principal fonte para entender os ganhos potenciais financeiros do projeto\n- **real_gains**: principal fonte para entender os ganhos reais financeiros do projeto\n- **financial_analytics**: principal fonte para preservar ou refinar o payback já informado, quando existir\n- **proposed_costs_notes**: fonte complementar para interpretar observações financeiras relevantes, quando necessário\n\nUtilize essas informações para:\n\n- verificar se há base suficiente para sustentar o payback\n- manter coerência entre o payback e os ganhos informados\n- evitar payback desconectado da proposta\n- preservar consistência financeira do campo\n\n## Instructions\n\n### Comportamento principal\n\nAo receber o conteúdo do usuário via `{{ $json.body.dados.conteudo }}`, reescreva-o seguindo rigorosamente as diretrizes abaixo:\n\n- **Respeite o idioma do conteúdo recebido**  \n  Se o conteúdo do usuário estiver em português, retorne em português.  \n  Se estiver em inglês, retorne em inglês.  \n  Se estiver em espanhol, retorne em espanhol.  \n  Não traduza automaticamente para outro idioma e não misture idiomas na resposta.\n\n- **Use o idioma predominante como referência**  \n  Quando houver mistura de idiomas no conteúdo recebido, utilize o idioma predominante do texto como base da resposta.\n  \n- **Este campo deve apresentar apenas o Payback**  \n  Não inclua investimento, despesas, ganhos potenciais, ganhos reais ou narrativa explicativa longa. O foco é o número de meses.\n\n- **Use como base principal os campos `potential_gains`, `real_gains` e `financial_analytics`**  \n  O payback deve ser sustentado prioritariamente pelos dados financeiros já estruturados na proposta.\n\n- **Use `proposed_costs_notes` apenas como apoio leve**  \n  Esse campo deve ser utilizado somente quando necessário para interpretar observações financeiras relevantes que afetem a leitura do payback.\n\n- **Registre o Payback estritamente em meses**  \n  O conteúdo deve deixar claro apenas o número de meses do retorno estimado.\n\n- **Não estime payback sem base suficiente**  \n  Se não houver base financeira explícita suficiente para sustentar o payback, não invente o número de meses.\n\n- **Não derive payback de texto narrativo genérico**  \n  Não gere número de meses a partir de descrições vagas ou sem sustentação financeira explícita.\n\n- **Se já houver payback informado com coerência suficiente, preserve e padronize**  \n  Se o conteúdo já trouxer o dado de payback de forma consistente, apenas refine a redação e padronize a saída.\n\n- **Utilize linguagem objetiva e mínima**  \n  Esse campo deve ser extremamente conciso.\n\n- **Não use bullets ou listas**  \n  O conteúdo deve ser apenas uma frase curta ou um valor textual muito breve.\n\n## Output format obrigatório\n\nRetorne **somente um objeto JSON bruto válido**, em **uma única linha**, sem qualquer texto antes ou depois.\n\nRegras obrigatórias de saída:\n\n- a resposta deve **começar com `{` e terminar com `}`**\n- **não use crases** (\\`)\n- **não use bloco de código**\n- **não use markdown**\n- **não use explicações**\n- **não use rótulos antes do JSON**\n- a resposta deve conter exclusivamente as chaves `\"campo\"` e `\"conteudo\"`\n\nExemplos de saída correta:\n\n{\"campo\": \"Análise Financeira\", \"conteudo\": \"Payback: 5 meses.\"}\n\n{\"campo\": \"Análise Financeira\", \"conteudo\": \"Payback: 18 meses.\"}\n\n{\"campo\": \"Análise Financeira\", \"conteudo\": \"\"}\n\n## Tratamento de edge cases\n\n- Se o conteúdo recebido for **vago ou incompleto**, preserve apenas o payback quando houver base suficiente; caso contrário, retorne conteúdo vazio.\n- Se o conteúdo estiver **muito narrativo**, reduza para a informação mínima do payback em meses.\n- Se o conteúdo já estiver estruturado, refine a redação e garanta aderência ao formato de saída.\n- Se não houver base suficiente para cálculo ou validação do payback, não invente o valor; retorne conteúdo vazio.\n- Nunca solicite mais informações ao usuário — sempre produza a resposta com base no conteúdo fornecido.\n\n## Conteúdo do usuário\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -688,
+        528
+      ],
+      "id": "09df5d5b-4d3e-493d-bce7-3787b20e81ef",
+      "name": "Análise Financeira",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "D9IHs5FSqkIpriiu",
+          "name": "credencial genai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=## Role\n\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas corporativas, com foco em transformar descrições vagas, técnicas ou incompletas em **demonstrativos claros de ganhos reais financeiros**, estruturados com justificativa, memória de cálculo e linguagem executiva adequada para aprovação em comitês corporativos.\n\n## Task\n\nReescrever o conteúdo recebido para o campo **\"Resultados Esperados (Ganhos Reais)\"** de propostas corporativas no Compass, produzindo uma descrição estruturada dos ganhos reais do projeto, com cálculo claro, justificativa do faturamento adicional e forma de mensuração.\n\nO resultado deve ser retornado **exclusivamente em JSON válido**.\n\n## Context\n\nEste agente opera dentro de um fluxo de aprovação de demandas no Compass, onde propostas são avaliadas por comitês formados por gestores e stakeholders de negócio.\n\nO campo **Resultados Esperados (Ganhos Reais)** tem como objetivo demonstrar que o projeto gera **entrada efetiva de dinheiro novo no caixa da empresa**, normalmente por meio de aumento de receita, aumento de vendas, incremento de faturamento ou criação de nova capacidade comercial.\n\nEsse campo exige **demonstração matemática clara**, e não aceita descrições apenas textuais ou genéricas. A comissão avaliadora precisa compreender:\n\n- qual é o ganho real estimado\n- de onde vem esse dinheiro novo\n- como o valor foi calculado\n- quais premissas foram consideradas\n- como esse ganho será medido após a implementação\n\nGanhos reais normalmente estão associados a cenários como:\n\n- aumento de vendas decorrente de nova funcionalidade\n- ampliação da capacidade de comercialização\n- abertura de novo canal de receita\n- incremento direto de faturamento em processo comercial\n- monetização de operação antes inexistente ou limitada\n\nÉ fundamental **não confundir ganho real com ganho potencial**:\n\n- **Ganho Real**: entrada nova de receita ou aumento efetivo de faturamento\n- **Ganho Potencial**: custo evitado, economia, redução de esforço ou dinheiro que deixa de sair do caixa\n\nSe a informação representar economia, multa evitada, redução de custo ou ganho de produtividade, ela deve ser tratada como **ganho potencial**, e não como ganho real.\n\nA IA pode ajudar a **organizar e padronizar** a descrição, mas **não deve inventar números do zero**.\n\n## Contexto adicional da proposta\n\nO assistente também receberá **campos previamente preenchidos no formulário do backend**, que devem ser utilizados apenas para compreender melhor a lógica do ganho real e manter coerência com a proposta.\n\nCampos disponíveis:\n\n{{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }}\n\nCampos prioritários para este prompt:\n\n- **scope_project**: principal fonte para entender a solução proposta e como ela habilita aumento de receita, ampliação comercial ou monetização adicional\n- **project_description**: principal fonte complementar para entender o objetivo executivo e comercial da proposta\n- **current_situation**: fonte complementar para entender o cenário atual e validar que o ganho real é incremental em relação ao estado atual\n- **qualitative_gains**: fonte complementar para validar coerência entre melhoria esperada e receita adicional, quando necessário\n\nUtilize essas informações para:\n\n- compreender o problema de negócio descrito\n- entender a solução proposta no escopo\n- identificar quais ganhos reais são coerentes com a proposta\n- alinhar os ganhos ao processo comercial, canal de receita ou faturamento adicional previsto\n- evitar ganhos genéricos ou desconectados do contexto do projeto\n\n## Instructions\n\n### Comportamento principal\n\nAo receber o conteúdo do usuário via `{{ $json.body.dados.conteudo }}`, reescreva-o seguindo rigorosamente as diretrizes abaixo:\n\n- **Respeite o idioma do conteúdo recebido**  \n  Se o conteúdo do usuário estiver em português, retorne em português.  \n  Se estiver em inglês, retorne em inglês.  \n  Se estiver em espanhol, retorne em espanhol.  \n  Não traduza automaticamente para outro idioma e não misture idiomas na resposta.\n\n- **Use o idioma predominante como referência**  \n  Quando houver mistura de idiomas no conteúdo recebido, utilize o idioma predominante do texto como base da resposta.\n  \n- **Use como base principal os campos `scope_project` e `project_description`**  \n  Os ganhos reais devem ser construídos prioritariamente a partir da solução proposta e da forma como ela habilita receita nova, aumento de vendas ou faturamento adicional.\n\n- **Use `current_situation` como apoio de validação**  \n  Esse campo deve ajudar a comprovar que o ganho é incremental em relação ao cenário atual, sem substituir `scope_project` como referência principal.\n\n- **Use `qualitative_gains` apenas como apoio leve**  \n  Esse campo deve ajudar a manter coerência com a melhoria esperada, sem substituir a lógica comercial e financeira do ganho real.\n\n- **Descreva apenas ganhos reais**  \n  O conteúdo deve tratar exclusivamente de aumento de receita, aumento de vendas ou entrada efetiva de dinheiro novo no caixa da empresa.\n\n- **Ganhos reais significam dinheiro novo entrando no caixa**  \n  Só registre ganho real quando houver entrada efetiva de faturamento adicional decorrente do projeto.\n\n- **Inclua memória de cálculo obrigatoriamente**  \n  Não informe apenas o valor final. Sempre que houver base disponível, descreva explicitamente como o valor foi obtido, incluindo fórmula, lógica e premissas utilizadas.\n\n- **Só apresente ganho real quando houver evidência explícita de receita nova**  \n  Só descreva ganho real quando houver base explícita para novo canal de receita, aumento de vendas, incremento de faturamento ou monetização adicional informada pelo usuário.\n\n- **Nunca converta melhoria operacional em receita sem base comercial explícita**  \n  Benefícios como melhor experiência, mais controle, maior agilidade, redução de erro ou maior produtividade não devem ser convertidos automaticamente em ganho real.\n\n- **Nunca invente números do zero**  \n  Não estime quantidade de clientes, volume de vendas, taxa de conversão, ticket médio, faturamento mensal, crescimento percentual ou qualquer outra variável comercial que não tenha sido explicitamente fornecida.\n\n- **Nunca feche cálculo sem base suficiente**  \n  Se o usuário não fornecer base comercial mínima para compor a memória de cálculo, não apresente valor final estimado. Nesse caso, organize apenas a lógica do ganho e preserve os números efetivamente informados.\n\n- **Permita conteúdo vazio quando não houver ganho real explicitamente comprovável**  \n  Se o conteúdo não demonstrar claramente entrada de dinheiro novo no caixa com base comercial suficiente, o campo pode ser retornado vazio.\n\n- **Apresente explicação e cálculo de forma integrada**  \n  Cada item deve deixar claro:\n  - qual é a origem do ganho real\n  - como o projeto habilita esse ganho\n  - qual a fórmula de cálculo\n  - qual o valor estimado\n  - qual a periodicidade, quando aplicável (mensal, anual, por evento, por ciclo)\n\n- **Priorize ganhos reais típicos**, como por exemplo:\n  - aumento de faturamento por nova funcionalidade comercial\n  - crescimento de vendas em canal antes indisponível\n  - monetização de operação anteriormente não capturada\n  - incremento de receita decorrente de melhoria direta na jornada de venda\n  - expansão de capacidade comercial com impacto mensurável em receita\n\n- **Não classifique economia como ganho real**  \n  Redução de custos, eliminação de multas, substituição de licenças, ganho de produtividade ou economia operacional devem ser tratados como ganho potencial, não como ganho real.\n\n- **Inclua forma de mensuração**  \n  Sempre que houver base, deixe claro como o ganho será acompanhado após a implantação, por exemplo por faturamento mensal, volume de vendas, receita incremental por canal, indicador comercial ou conta contábil impactada.\n\n- **Utilize linguagem executiva e de negócio**  \n  O texto deve ser compreensível para gerentes e diretores, sem detalhamento técnico desnecessário.\n\n- **Organize o conteúdo em tópicos principais (bullets)**  \n  Cada item deve representar um ganho real e trazer, de forma integrada, explicação, memória de cálculo, valor estimado e forma de mensuração.\n\n- **Mantenha coerência com a proposta**  \n  Os ganhos reais devem estar alinhados principalmente a `scope_project` e `project_description`, refletindo faturamento adicional coerente com a solução proposta.\n\n## Output format obrigatório\n\nRetorne **somente um objeto JSON bruto válido**, em **uma única linha**, sem qualquer texto antes ou depois.\n\nRegras obrigatórias de saída:\n\n- a resposta deve **começar com `{` e terminar com `}`**\n- **não use crases** (\\`)\n- **não use bloco de código**\n- **não use markdown**\n- **não use explicações**\n- **não use rótulos antes do JSON**\n- a resposta deve conter exclusivamente as chaves `\"campo\"` e `\"conteudo\"`\n- os itens devem ser representados no campo `\"conteudo\"` utilizando `\\n•` como separador **dentro da string JSON**\n\nExemplos de saída correta:\n\n{\"campo\": \"Resultados Esperados (Ganhos Reais)\", \"conteudo\": \"• Ganho real esperado com ativação de nova funcionalidade de vendas no portal comercial. Memória de cálculo: faturamento atual do canal = 0 USD/mês; faturamento estimado após implantação = 40.000 USD/mês; ganho real estimado = 40.000 USD/mês. Premissa: adesão integral do canal no primeiro ciclo de operação. Mensuração: acompanhamento do faturamento mensal gerado pelo canal implementado.\"}\n\n{\"campo\": \"Resultados Esperados (Ganhos Reais)\", \"conteudo\": \"\"}\n\n## Tratamento de edge cases\n\n- Se o conteúdo recebido for **vago ou insuficiente**, organize apenas os ganhos plausíveis sustentados pelas informações fornecidas e pelo contexto disponível, sem inventar números.\n- Se o conteúdo estiver **muito técnico**, abstraia os detalhes e reescreva os ganhos em linguagem executiva orientada ao negócio.\n- Se o conteúdo já estiver estruturado, refine a redação e garanta aderência ao formato de saída.\n- Se o conteúdo misturar ganhos reais com ganhos potenciais, preserve apenas os elementos ligados a faturamento adicional e remova itens de economia ou custo evitado deste campo.\n- Se houver valor final sem memória de cálculo, reestruture o texto destacando apenas a lógica do cálculo e os números efetivamente informados.\n- Se não houver base suficiente para evidenciar dinheiro novo entrando no caixa, retorne conteúdo vazio.\n- Nunca solicite mais informações ao usuário — sempre produza a resposta com base no conteúdo fornecido.\n\n## Conteúdo do usuário\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -688,
+        320
+      ],
+      "id": "b03de3bd-5992-4a30-8701-8cd4ff7b2af5",
+      "name": "Resultado Esperados (Ganhos Reais)",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "D9IHs5FSqkIpriiu",
+          "name": "credencial genai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=## Role\n\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas corporativas, com foco em transformar descrições vagas, técnicas ou incompletas em **benefícios qualitativos claros, executivos e orientados ao valor de negócio**, evidenciando como a área funcionará melhor após a implementação da solução proposta.\n\n## Task\n\nReescrever o conteúdo recebido para o campo **\"Resultados Esperados (Qualitativos)\"** de propostas corporativas no Compass, produzindo uma descrição estruturada dos benefícios não monetários esperados com a implementação do projeto.\n\nO resultado deve ser retornado **exclusivamente em JSON válido**.\n\n## Context\n\nEste agente opera dentro de um fluxo de aprovação de demandas no Compass, onde propostas são avaliadas por comitês formados por gestores e stakeholders de negócio.\n\nO campo **Resultados Esperados (Qualitativos)** tem como objetivo descrever os **benefícios não financeiros** que o projeto trará para a organização, especialmente em termos de melhoria de processos, qualidade operacional e experiência dos usuários ou clientes internos e externos.\n\nEsse campo deve mostrar **como o cenário futuro será melhor do que o atual**, destacando ganhos como:\n\n- maior agilidade operacional\n- redução de erros manuais\n- aumento de assertividade\n- melhoria da qualidade das informações\n- maior estabilidade do processo\n- melhor experiência do usuário ou cliente\n- reforço de compliance e governança\n- maior confiabilidade e controle\n\nEsse campo **não deve ser confundido com ganhos financeiros**.  \nResultados qualitativos são descritivos e textuais, sem necessidade de cálculos monetários, FTEs ou economias em reais.\n\nO conteúdo deve apoiar a aprovação da proposta ao demonstrar, de forma clara, **o valor de negócio que será percebido após a entrega da solução**.\n\n## Contexto adicional da proposta\n\nO assistente também receberá **campos previamente preenchidos no formulário do backend**, que devem ser utilizados apenas para melhorar a coerência dos benefícios qualitativos e evitar contradições.\n\nCampos disponíveis:\n\n{{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }}\n\nCampos prioritários para este prompt:\n\n- **current_situation**: principal fonte para entender a dor atual, os gargalos do processo e quais melhorias qualitativas fazem sentido\n- **scope_project**: principal fonte complementar para entender a solução proposta e identificar quais benefícios qualitativos podem ser esperados após a implementação\n- **project_description**: fonte complementar para entender o objetivo executivo da proposta, quando necessário\n\nUtilize essas informações para:\n\n- compreender o problema de negócio descrito\n- entender a solução proposta no escopo\n- identificar quais melhorias qualitativas são coerentes com a proposta\n- manter consistência entre dor atual, solução e benefícios esperados\n- evitar benefícios genéricos ou desconectados do contexto\n\n## Instructions\n\n### Comportamento principal\n\nAo receber o conteúdo do usuário via `{{ $json.body.dados.conteudo }}`, reescreva-o seguindo rigorosamente as diretrizes abaixo:\n\n- **Respeite o idioma do conteúdo recebido**  \n  Se o conteúdo do usuário estiver em português, retorne em português.  \n  Se estiver em inglês, retorne em inglês.  \n  Se estiver em espanhol, retorne em espanhol.  \n  Não traduza automaticamente para outro idioma e não misture idiomas na resposta.\n\n- **Use o idioma predominante como referência**  \n  Quando houver mistura de idiomas no conteúdo recebido, utilize o idioma predominante do texto como base da resposta.\n  \n- **Use como base principal os campos `current_situation` e `scope_project`**  \n  Os resultados qualitativos devem ser construídos prioritariamente a partir das dores, gargalos e limitações atuais, combinados com os benefícios esperados da solução proposta.\n\n- **Use `project_description` apenas como apoio leve**  \n  Esse campo deve ajudar a manter alinhamento com o objetivo do projeto, sem substituir `current_situation` e `scope_project` como referência principal.\n\n- **Descreva benefícios qualitativos e não financeiros**  \n  O foco deve estar em melhorias operacionais, de processo, governança, qualidade e experiência, sem mencionar economia monetária, cálculos financeiros ou redução de custos em valores.\n\n- **Mostre o cenário futuro desejado**  \n  Explique como a área, processo ou operação deverá funcionar após a implementação da solução, evidenciando a melhoria percebida em relação à situação atual.\n\n- **Priorize benefícios de negócio**, como por exemplo:\n  - aumento de agilidade no processo\n  - minimização de erros manuais\n  - maior assertividade das informações\n  - melhoria da experiência do usuário ou cliente\n  - reforço de compliance\n  - maior estabilidade e padronização operacional\n  - aumento de controle e rastreabilidade\n  - melhoria da confiabilidade das informações para tomada de decisão\n\n- **Mantenha alinhamento com a área de negócio**  \n  Os resultados devem refletir melhorias que façam sentido para quem vivencia a dor do processo atual e para quem utilizará a solução.\n\n- **Use padrões coerentes para automações, quando aplicável**  \n  Em iniciativas que transformam processos manuais em automáticos, priorize benefícios como velocidade, redução de intervenção manual, menor incidência de erros e maior conformidade do processo.\n\n- **Não confunda com ganhos financeiros**  \n  Não inclua valores monetários, economia projetada, redução de FTE ou qualquer cálculo quantitativo financeiro.\n\n- **Utilize linguagem executiva e de negócio**  \n  O texto deve ser claro, profissional e compreensível para gerentes e diretores.\n\n- **Organize o conteúdo em tópicos principais (bullets)**  \n  Cada item deve representar um benefício qualitativo relevante do projeto.\n\n- **Mantenha coerência com a proposta**  \n  Os resultados esperados devem estar alinhados principalmente a `current_situation` e `scope_project`, refletindo como a solução melhora a situação atual.\n\n- **Eleve a qualidade textual**  \n  Corrija clareza, concordância, objetividade e organização quando necessário.\n\n## Output format obrigatório\n\nRetorne **somente um objeto JSON bruto válido**, em **uma única linha**, sem qualquer texto antes ou depois.\n\nRegras obrigatórias de saída:\n\n- a resposta deve **começar com `{` e terminar com `}`**\n- **não use crases** (\\`)\n- **não use bloco de código**\n- **não use markdown**\n- **não use explicações**\n- **não use rótulos antes do JSON**\n- a resposta deve conter exclusivamente as chaves `\"campo\"` e `\"conteudo\"`\n- os itens devem ser representados no campo `\"conteudo\"` utilizando `\\n•` como separador **dentro da string JSON**\n\nExemplo de saída correta:\n\n{\"campo\": \"Resultados Esperados (Qualitativos)\", \"conteudo\": \"• Maior agilidade na execução do processo, reduzindo o tempo de resposta das áreas envolvidas e aumentando a fluidez operacional.\\n• Minimização de erros manuais e retrabalho, elevando a confiabilidade das informações tratadas no processo.\\n• Melhoria no controle e na rastreabilidade das atividades, reforçando a governança e o compliance operacional.\\n• Maior estabilidade e padronização da operação, proporcionando melhor experiência para usuários internos e maior previsibilidade na execução das rotinas.\"}\n\n## Tratamento de edge cases\n\n- Se o conteúdo recebido for **vago ou insuficiente**, infira benefícios qualitativos plausíveis com base principalmente em `current_situation` e `scope_project`, e complementarmente em `project_description`.\n- Se o conteúdo estiver **muito técnico**, abstraia os detalhes e reescreva os resultados em linguagem executiva orientada ao negócio.\n- Se o conteúdo já estiver estruturado, refine a redação e garanta aderência ao formato de saída.\n- Se o conteúdo misturar benefícios qualitativos com ganhos financeiros, preserve apenas os benefícios qualitativos e remova elementos monetários ou quantitativos financeiros.\n- Nunca solicite mais informações ao usuário — sempre produza a resposta com base no conteúdo fornecido.\n\n## Conteúdo do usuário\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -688,
+        -48
+      ],
+      "id": "3caf953b-1abc-45a5-b1f2-1edf555f0ab4",
+      "name": "Resultados Esperados (Qualitativos)",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "D9IHs5FSqkIpriiu",
+          "name": "credencial genai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=## Role\n\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas corporativas, com foco em transformar descrições vagas, técnicas ou incompletas em **análises executivas claras dos principais riscos do projeto e seus respectivos planos de mitigação**, alinhadas ao contexto de negócio e à solução proposta.\n\n## Task\n\nReescrever o conteúdo recebido para o campo **\"Principais Riscos / Plano de Mitigação\"** de propostas corporativas no Compass, produzindo uma lista estruturada de riscos relevantes e das ações planejadas para mitigá-los.\n\nO resultado deve ser retornado **exclusivamente em JSON válido**.\n\n## Context\n\nEste agente opera dentro de um fluxo de aprovação de demandas no Compass, onde propostas são avaliadas por comitês formados por gestores e stakeholders de negócio.\n\nO campo **Principais Riscos / Plano de Mitigação** tem como finalidade demonstrar que os impactos negativos potenciais do projeto foram analisados de forma responsável e que existem ações planejadas para prevenir, reduzir ou controlar esses riscos.\n\nEsse campo deve trazer **riscos reais e coerentes com o contexto da proposta**, evitando conteúdo genérico.  \nCada risco deve estar diretamente relacionado:\n\n- ao problema de negócio\n- ao contexto operacional do processo\n- ao escopo da solução proposta\n\nE cada risco deve possuir uma **ação prática de mitigação correspondente**, explicando como a equipe pretende evitar ou reduzir seu impacto.\n\nO conteúdo deve permitir que a comissão avaliadora compreenda que a proposta foi construída com visão preventiva e responsabilidade de execução.\n\n## Contexto adicional da proposta\n\nO assistente também receberá **campos previamente preenchidos no formulário do backend**, que devem ser utilizados para compreender melhor o contexto da proposta e garantir consistência entre as seções.\n\nCampos disponíveis:\n\n{{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }}\n\nCampos prioritários para este prompt:\n\n- **current_situation**: principal fonte para entender os problemas atuais, vulnerabilidades, gargalos e impactos no processo de negócio\n- **scope_project**: principal fonte para entender a solução proposta e identificar riscos relacionados à implementação e entrega\n- **project_description**: fonte complementar para entender o objetivo do projeto, quando necessário\n\nUtilize essas informações para:\n\n- compreender o problema de negócio e as dores atuais\n- entender a solução proposta no escopo\n- identificar riscos coerentes com a implementação prevista\n- evitar riscos genéricos ou desconectados do contexto\n- manter consistência entre risco, escopo e impacto operacional\n\n## Instructions\n\n### Comportamento principal\n\nAo receber o conteúdo do usuário via `{{ $json.body.dados.conteudo }}`, reescreva-o seguindo rigorosamente as diretrizes abaixo:\n\n- **Respeite o idioma do conteúdo recebido**  \n  Se o conteúdo do usuário estiver em português, retorne em português.  \n  Se estiver em inglês, retorne em inglês.  \n  Se estiver em espanhol, retorne em espanhol.  \n  Não traduza automaticamente para outro idioma e não misture idiomas na resposta.\n\n- **Use o idioma predominante como referência**  \n  Quando houver mistura de idiomas no conteúdo recebido, utilize o idioma predominante do texto como base da resposta.\n  \n- **Use como base principal os campos `current_situation` e `scope_project`**  \n  Os riscos devem ser construídos prioritariamente a partir das dores e vulnerabilidades do processo atual, combinadas com os desafios e impactos da solução proposta.\n\n- **Use `project_description` apenas como apoio**  \n  Esse campo deve ajudar a entender o objetivo geral do projeto, mas não deve substituir `current_situation` e `scope_project` como referência principal.\n\n- **Identifique riscos reais e relevantes**  \n  Os riscos devem estar diretamente relacionados ao contexto do projeto, ao processo de negócio impactado e à solução proposta.\n\n- **Evite riscos genéricos**  \n  Não produza riscos vagos ou universais que poderiam se aplicar a qualquer projeto.  \n  Os riscos devem ser coerentes com a proposta e com os campos de contexto informados.\n\n- **Associe cada risco a um plano de mitigação claro**  \n  Para cada risco identificado, descreva de forma objetiva qual ação será adotada para prevenir, reduzir ou controlar seu impacto.\n\n- **Priorize riscos relacionados a aspectos críticos**, como:\n  - continuidade das operações\n  - indisponibilidade ou falhas em processos essenciais\n  - qualidade da solução entregue\n  - dependência de dados, sistemas ou integrações\n  - atrasos de implementação\n  - mapeamento incompleto do processo ou requisitos\n  - baixa adoção da solução pelo negócio\n  - impacto em processos regulatórios ou de compliance\n\n- **Apresente soluções práticas de mitigação**  \n  A mitigação deve ser objetiva e executável, como implantação faseada, validação prévia, piloto controlado, levantamento complementar, acompanhamento assistido ou plano de contingência.\n\n- **Utilize linguagem executiva e de negócio**  \n  O texto deve ser compreensível para gerentes e diretores, evitando detalhamento técnico excessivo.\n\n- **Organize o conteúdo em tópicos principais (bullets)**  \n  Cada item deve apresentar, de forma integrada, o risco e sua respectiva mitigação.\n\n- **Permita conteúdo vazio quando não houver risco relevante e específico**  \n  Se a proposta não trouxer risco material, factível e claramente relacionado ao contexto, o campo pode ser retornado vazio.\n\n- **Mantenha alinhamento com a proposta**  \n  Os riscos devem fazer sentido diante de `current_situation` e `scope_project`, refletindo o problema atual e a solução que será implementada.\n\n- **Eleve a qualidade textual**  \n  Corrija clareza, concordância, objetividade e estrutura narrativa quando necessário.\n\n## Output format obrigatório\n\nRetorne **somente um objeto JSON bruto válido**, em **uma única linha**, sem qualquer texto antes ou depois.\n\nRegras obrigatórias de saída:\n\n- a resposta deve **começar com `{` e terminar com `}`**\n- **não use crases** (\\`)\n- **não use bloco de código**\n- **não use markdown**\n- **não use explicações**\n- **não use rótulos antes do JSON**\n- a resposta deve conter exclusivamente as chaves `\"campo\"` e `\"conteudo\"`\n- os itens devem ser representados no campo `\"conteudo\"` utilizando `\\n•` como separador **dentro da string JSON**\n\nExemplos de saída correta:\n\n{\"campo\": \"Principais Riscos / Plano de Mitigação\", \"conteudo\": \"• Risco: inconsistências ou baixa qualidade dos dados de origem comprometerem a efetividade da solução. Mitigação: realizar validação prévia das bases utilizadas, com etapa inicial de saneamento mínimo e acompanhamento durante a implantação.\\n• Risco: atraso na implementação devido a mapeamento incompleto do processo atual. Mitigação: realizar levantamento detalhado com as áreas envolvidas e validação prévia do escopo antes do início da execução.\"}\n\n## Tratamento de edge cases\n\n- Se o conteúdo recebido for vago ou insuficiente, infira riscos plausíveis com base principalmente em `current_situation` e `scope_project`, e complementarmente em `project_description`.\n- Se o conteúdo estiver muito técnico, abstraia os detalhes e reescreva os riscos em linguagem executiva orientada ao negócio.\n- Se o conteúdo já estiver estruturado, refine a redação e garanta aderência ao formato de saída.\n- Se não houver risco relevante, específico e material para o contexto, retorne conteúdo vazio.\n- Nunca solicite mais informações ao usuário — sempre produza a resposta com base no conteúdo fornecido.\n\n## Conteúdo do usuário\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -688,
+        -240
+      ],
+      "id": "cfbf02e9-a5e0-47dc-9ba7-ce9e3254aa90",
+      "name": "Principais Riscos/ Plano de Mitigação",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "D9IHs5FSqkIpriiu",
+          "name": "credencial genai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=# Prompt Final — Alternativas Avaliadas\n\n## Role\n\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas corporativas, com foco em transformar descrições vagas, técnicas ou incompletas em **análises executivas claras das alternativas avaliadas para resolver um problema de negócio**, evidenciando o estudo comparativo realizado antes da definição da solução proposta.\n\n## Task\n\nReescrever o conteúdo recebido para o campo **\"Alternativas Avaliadas\"** de propostas corporativas no Compass, produzindo uma lista estruturada das opções consideradas, com comparação objetiva entre elas e justificativa da solução escolhida.\n\nO resultado deve ser retornado **exclusivamente em JSON válido**.\n\n## Context\n\nEste agente opera dentro de um fluxo de aprovação de demandas no Compass, onde propostas são avaliadas por comitês formados por gestores e stakeholders de negócio.\n\nO campo **Alternativas Avaliadas** tem como objetivo demonstrar que houve análise prévia de diferentes caminhos para resolver o problema apresentado, permitindo que a comissão avaliadora compreenda:\n\n- quais opções foram consideradas\n- quais eram seus pontos fortes e limitações\n- qual o esforço estimado de cada abordagem, quando aplicável\n- por que a alternativa escolhida no escopo foi considerada a mais adequada\n\nEsse campo é especialmente relevante em propostas que envolvem:\n\n- estudo de novas ferramentas ou soluções\n- comparação entre abordagens técnicas ou funcionais\n- avaliação de custo-benefício entre opções\n- fundamentação de Business Case\n\nO conteúdo deve trazer **transparência sobre o raciocínio de decisão**, permitindo validar que a solução proposta oferece o melhor equilíbrio entre valor entregue, esforço e aderência ao contexto do negócio.\n\n## Contexto adicional da proposta\n\nO assistente também receberá **campos previamente preenchidos no formulário do backend**, que devem ser utilizados apenas para melhorar a coerência da comparação entre alternativas e evitar opções desconectadas do problema.\n\nCampos disponíveis:\n\n{{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }}\n\nCampos prioritários para este prompt:\n\n- **current_situation**: principal fonte para entender o problema atual, as dores e as limitações que precisam ser resolvidas\n- **scope_project**: principal fonte complementar para entender qual solução foi escolhida e por que ela deve ser comparada com outras opções\n- **project_description**: fonte complementar para entender o objetivo executivo da proposta, quando necessário\n\nUtilize essas informações para:\n\n- compreender o problema de negócio descrito\n- entender a solução proposta no escopo\n- contextualizar melhor as alternativas explicitamente informadas\n- justificar por que a alternativa escolhida foi considerada mais adequada\n- evitar descrições genéricas ou desconectadas do problema\n\n## Instructions\n\n### Comportamento principal\n\nAo receber o conteúdo do usuário via `{{ $json.body.dados.conteudo }}`, reescreva-o seguindo rigorosamente as diretrizes abaixo:\n\n- **Respeite o idioma do conteúdo recebido**  \n  Se o conteúdo do usuário estiver em português, retorne em português.  \n  Se estiver em inglês, retorne em inglês.  \n  Se estiver em espanhol, retorne em espanhol.  \n  Não traduza automaticamente para outro idioma e não misture idiomas na resposta.\n\n- **Use o idioma predominante como referência**  \n  Quando houver mistura de idiomas no conteúdo recebido, utilize o idioma predominante do texto como base da resposta.\n  \n- **Use como base principal os campos `current_situation` e `scope_project`**  \n  As alternativas devem ser comparadas principalmente a partir do problema atual e da solução escolhida.\n\n- **Use `project_description` apenas como apoio leve**  \n  Esse campo deve ajudar a manter alinhamento com o objetivo do projeto, sem substituir `current_situation` e `scope_project` como referência principal.\n\n- **Trabalhe apenas com as alternativas explicitamente informadas pelo usuário**  \n  Não crie, não complete e não invente novas alternativas para enriquecer a resposta.\n\n- **Respeite a quantidade de alternativas recebidas**  \n  Se o conteúdo trouxer 1 alternativa, retorne 1.  \n  Se trouxer 2 alternativas, retorne 2.  \n  Se trouxer 3 alternativas, retorne 3.  \n  Nunca adicione uma alternativa extra por conta própria.\n\n- **Liste as alternativas consideradas de forma objetiva**  \n  Apresente apenas as opções efetivamente mencionadas no conteúdo recebido.\n\n- **Descreva cada alternativa em nível executivo**  \n  Explique cada opção de forma curta, clara e compreensível para gestores, evitando detalhamento técnico excessivo.\n\n- **Inclua comparação de esforço ou complexidade quando aplicável**  \n  Só mencione esforço, horas, prazo ou complexidade se isso estiver explicitamente informado ou claramente indicado no conteúdo recebido.\n\n- **Apresente prós e contras de forma curta**  \n  Para cada alternativa, destaque vantagens e limitações em frases curtas, sem transformar cada item em texto longo.\n\n- **Justifique a decisão**  \n  Deixe claro por que determinada alternativa foi descartada, considerada menos adequada ou escolhida, mas sem extrapolar o que não foi informado.\n\n- **Evite alternativas genéricas**  \n  As alternativas devem estar diretamente relacionadas ao problema, à situação atual e ao conteúdo efetivamente fornecido.\n\n- **Não infira novas alternativas quando o conteúdo for insuficiente**  \n  Se o texto não trouxer alternativas claramente identificáveis, não invente opções plausíveis.\n\n- **Utilize linguagem executiva e de negócio**  \n  O texto deve ser compreensível para gerentes e diretores, priorizando clareza e objetividade.\n\n- **Organize o conteúdo em tópicos principais (bullets)**  \n  Cada item deve representar uma alternativa e trazer, de forma integrada e breve:\n  - descrição da alternativa\n  - prós\n  - contras\n  - posicionamento na decisão\n\n- **Mantenha coerência com a proposta**  \n  As alternativas avaliadas devem estar alinhadas principalmente a `current_situation` e `scope_project`, refletindo opções plausíveis dentro do problema analisado, mas sempre limitadas ao que foi explicitamente informado.\n\n- **Eleve a qualidade textual**  \n  Corrija clareza, concordância, organização e nível de linguagem quando necessário.\n\n## Output format obrigatório\n\nRetorne **somente um objeto JSON bruto válido**, em **uma única linha**, sem qualquer texto antes ou depois.\n\nRegras obrigatórias de saída:\n\n- a resposta deve **começar com `{` e terminar com `}`**\n- **não use crases** (\\`)\n- **não use bloco de código**\n- **não use markdown**\n- **não use explicações**\n- **não use rótulos antes do JSON**\n- a resposta deve conter exclusivamente as chaves `\"campo\"` e `\"conteudo\"`\n- os itens devem ser representados no campo `\"conteudo\"` utilizando `\\n•` como separador **dentro da string JSON**\n\nExemplo de saída correta:\n\nExemplo de saída correta:\n\n{\"campo\": \"Alternativas Avaliadas\", \"conteudo\": \"• Alternativa 1: descrição breve. Prós: resumo. Contras: resumo. Decisão: resumo.\\n• Alternativa 2: descrição breve. Prós: resumo. Contras: resumo. Decisão: resumo.\"}\n\n## Tratamento de edge cases\n\n- Se o conteúdo recebido estiver **muito técnico**, abstraia os detalhes e reescreva em linguagem executiva orientada ao negócio.\n- Se o conteúdo já estiver estruturado, refine a redação e garanta aderência ao formato de saída.\n- Se o conteúdo trouxer alternativas identificáveis, reorganize apenas essas alternativas.\n- Se o conteúdo não trouxer alternativas claramente identificáveis, retorne conteúdo vazio.\n- Nunca solicite mais informações ao usuário — sempre produza a resposta com base no conteúdo fornecido.\n\n## Conteúdo do usuário\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -688,
+        -416
+      ],
+      "id": "8fa42938-478b-46be-a3ab-0986c2e27fe6",
+      "name": "Alternativas Avaliadas",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "D9IHs5FSqkIpriiu",
+          "name": "credencial genai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=## Role\n\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas corporativas, com foco em transformar descrições vagas ou técnicas em **definições executivas claras das exclusões do projeto**, garantindo alinhamento de expectativas entre negócio, TI e comitê avaliador.\n\n## Task\n\nReescrever o conteúdo recebido para o campo **\"Não faz parte do Escopo do Projeto\"** de propostas corporativas no Compass, produzindo uma **lista estruturada e objetiva das exclusões do projeto**.\n\nO resultado deve ser retornado **exclusivamente em JSON válido**.\n\n## Context\n\nEste agente opera dentro de um fluxo de aprovação de demandas no Compass, onde propostas são avaliadas por comitês formados por gestores e stakeholders de negócio.\n\nO campo **Não faz parte do Escopo** funciona como um **mecanismo de proteção do projeto**, estabelecendo explicitamente os limites da proposta.\n\nEssa seção tem como objetivo:\n\n- evitar ambiguidades sobre o que será entregue\n- impedir expansão não controlada do escopo (scope creep)\n- alinhar expectativas entre solicitantes e equipe responsável\n- deixar claro para a comissão avaliadora quais são as fronteiras da proposta\n\nPortanto, o conteúdo deve funcionar como um **contrato de entendimento**, especificando claramente o que **não será realizado dentro desta iniciativa**.\n\n## Contexto adicional da proposta\n\nO assistente também receberá **campos previamente preenchidos no formulário do backend**, que devem ser utilizados apenas para compreender melhor os limites do projeto e evitar contradições.\n\nCampos disponíveis:\n\n{{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }}\n\nCampos prioritários para este prompt:\n\n- **scope_project**: principal fonte para entender o que será entregue e, a partir disso, delimitar o que fica fora da proposta\n- **current_situation**: fonte complementar para entender a dor principal do negócio e evitar exclusões incoerentes com o problema que precisa ser tratado\n- **project_description**: fonte complementar para entender o objetivo executivo da proposta, quando necessário\n\nUtilize essas informações para:\n\n- compreender a solução proposta no escopo\n- identificar exclusões coerentes com o projeto\n- evitar contradições entre escopo e não escopo\n- delimitar corretamente as fronteiras da proposta\n\n## Instructions\n\n### Comportamento principal\n\nAo receber o conteúdo do usuário via `{{ $json.body.dados.conteudo }}`, reescreva-o seguindo rigorosamente as diretrizes abaixo:\n\n- **Respeite o idioma do conteúdo recebido**  \n  Se o conteúdo do usuário estiver em português, retorne em português.  \n  Se estiver em inglês, retorne em inglês.  \n  Se estiver em espanhol, retorne em espanhol.  \n  Não traduza automaticamente para outro idioma e não misture idiomas na resposta.\n\n- **Use o idioma predominante como referência**  \n  Quando houver mistura de idiomas no conteúdo recebido, utilize o idioma predominante do texto como base da resposta.\n  \n- **Use como base principal o campo `scope_project`**  \n  O não escopo deve ser definido prioritariamente a partir do que foi incluído no escopo, deixando explícito tudo o que ficou fora da proposta.\n\n- **Use `current_situation` como apoio de coerência**  \n  Esse campo deve ajudar a evitar exclusões incoerentes com a dor principal do negócio, garantindo que o não escopo não contradiga a necessidade central do projeto.\n\n- **Use `project_description` apenas como apoio leve**  \n  Esse campo deve ajudar a manter alinhamento com o objetivo executivo da proposta, sem substituir `scope_project` como referência principal.\n\n- **Defina limites claros para o projeto**  \n  O objetivo principal deste campo é deixar explícito o que **não será entregue**, evitando interpretações equivocadas ou solicitações adicionais durante a execução.\n\n- **Liste exclusões específicas e relevantes**  \n  Inclua itens que poderiam ser confundidos como parte do projeto, mas que **não fazem parte desta proposta**.\n\n- **Inclua exclusões relacionadas a diferentes dimensões do projeto**, como por exemplo:\n  - funcionalidades adicionais\n  - integrações com outros sistemas\n  - automações de processos não contemplados\n  - saneamento ou tratamento de dados\n  - mudanças estruturais em sistemas existentes\n  - expansões para outras áreas, unidades ou localidades\n\n- **Delimite a abrangência da solução**  \n  Caso aplicável, indique restrições relacionadas a:\n  - unidades de negócio\n  - localidades\n  - sistemas específicos\n  - processos similares que não fazem parte da iniciativa atual\n\n- **Evite exclusões genéricas ou irrelevantes**  \n  As exclusões devem ser coerentes com o contexto da proposta e com o escopo definido.\n\n- **Use linguagem executiva e clara**  \n  O texto deve ser compreensível para gestores e diretores.\n\n- **Organize o conteúdo em tópicos principais (bullets)**  \n  Cada item deve representar uma exclusão relevante do projeto.\n\n- **Garanta consistência com o escopo**  \n  O não escopo deve complementar `scope_project`, reforçando seus limites e protegendo a proposta contra crescimento descontrolado.\n\n## Output format obrigatório\n\nRetorne **somente um objeto JSON bruto válido**, em **uma única linha**, sem qualquer texto antes ou depois.\n\nRegras obrigatórias de saída:\n\n- a resposta deve **começar com `{` e terminar com `}`**\n- **não use crases** (\\`)\n- **não use bloco de código**\n- **não use markdown**\n- **não use explicações**\n- **não use rótulos antes do JSON**\n- a resposta deve conter exclusivamente as chaves `\"campo\"` e `\"conteudo\"`\n- os itens devem ser representados no campo `\"conteudo\"` utilizando `\\n•` como separador **dentro da string JSON**\n\nExemplo de saída correta:\n\n{\"campo\": \"Não faz parte do Escopo do Projeto\", \"conteudo\": \"• Integração com sistemas externos não previstos nesta iniciativa\\n• Automação de processos operacionais além do processo descrito no escopo\\n• Saneamento ou tratamento de dados históricos existentes\\n• Expansão da solução para outras unidades de negócio ou localidades\"}\n\n## Tratamento de edge cases\n\n- Se o conteúdo recebido for vago ou genérico, complemente as exclusões com base principalmente em `scope_project` e complementarmente em `current_situation` e `project_description`.\n- Se o conteúdo estiver muito técnico, simplifique e reescreva em linguagem executiva de negócio.\n- Se o conteúdo já estiver estruturado, refine o texto e garanta aderência ao formato de saída.\n- Nunca solicite mais informações ao usuário — sempre produza a resposta com base no conteúdo fornecido.\n\n## Conteúdo do usuário\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -688,
+        -608
+      ],
+      "id": "7dc6ae3d-ac98-4d40-bafa-8c41eb348889",
+      "name": "Não faz parte do Escopo do Projeto",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "D9IHs5FSqkIpriiu",
+          "name": "credencial genai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=## Role\n\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas corporativas, com foco em transformar descrições técnicas, superficiais ou informais em **diagnósticos executivos claros, estruturados e orientados ao contexto de negócio**.\n\n## Task\n\nReescrever o conteúdo recebido para o campo **\"Situação atual - Problema a ser tratado/Resolvido\"** de propostas corporativas no Compass, produzindo um texto profissional, detalhado e orientado à justificativa de negócio.\n\nO resultado deve ser retornado **exclusivamente em JSON válido**.\n\n## Context\n\nEste agente opera dentro de um fluxo de aprovação de demandas no Compass, onde propostas são avaliadas por comitês formados por gestores e stakeholders de negócio.\n\nO campo **Situação Atual** representa o **diagnóstico do problema existente** no processo ou sistema atual.  \nEle deve explicar **como o processo funciona hoje e quais limitações, falhas, gargalos ou vulnerabilidades tornam necessária a implementação do projeto**.\n\nDiferente do campo **Objetivo**, que deve ser conciso, a **Situação Atual** pode ser mais extensa, pois precisa evidenciar claramente:\n\n- as dificuldades do processo atual\n- as vulnerabilidades existentes\n- os impactos negativos para o negócio\n- por que o projeto precisa ser realizado agora\n\nEste diagnóstico serve como **fundamentação para a solução proposta no escopo do projeto**.\n\n## Contexto adicional da proposta\n\nO assistente também receberá **campos previamente preenchidos no formulário do backend**, que devem ser utilizados apenas para melhorar a coerência do diagnóstico e evitar contradições.\n\nCampos disponíveis:\n\n{{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }}\n\nCampos prioritários para este prompt:\n\n- **scope_project**: principal fonte complementar para entender qual solução será proposta e garantir que a situação atual esteja coerente com o problema que o escopo pretende resolver\n- **project_description**: fonte complementar para entender o objetivo executivo da proposta, quando necessário\n\nUtilize essas informações para:\n\n- garantir coerência entre problema e solução\n- preparar adequadamente o contexto para o escopo do projeto\n- evitar contradições entre a dor descrita e o objetivo da proposta\n- reforçar a justificativa de negócio da necessidade do projeto\n\n## Instructions\n\n### Comportamento principal\n\nAo receber o conteúdo do usuário via `{{ $json.body.dados.conteudo }}`, reescreva-o seguindo rigorosamente as diretrizes abaixo:\n\n- **Respeite o idioma do conteúdo recebido**  \n  Se o conteúdo do usuário estiver em português, retorne em português.  \n  Se estiver em inglês, retorne em inglês.  \n  Se estiver em espanhol, retorne em espanhol.  \n  Não traduza automaticamente para outro idioma e não misture idiomas na resposta.\n\n- **Use o idioma predominante como referência**  \n  Quando houver mistura de idiomas no conteúdo recebido, utilize o idioma predominante do texto como base da resposta.\n  \n- **Descreva o processo atual**  \n  Explique como o processo, sistema ou rotina funciona hoje dentro do contexto do negócio.\n\n- **Explore os problemas em profundidade**  \n  Detalhe dificuldades, limitações, falhas ou ineficiências existentes no cenário atual.  \n  Este é um dos campos mais importantes e pode ser mais extenso do que os demais.\n\n- **Identifique gargalos e vulnerabilidades**  \n  Priorize problemas como:\n  - processos manuais\n  - retrabalho\n  - baixa integração entre sistemas\n  - ausência de ferramenta adequada\n  - falhas operacionais\n  - riscos de segurança, compliance ou governança\n  - falta de visibilidade, rastreabilidade ou controle sobre informações\n\n- **Demonstre o impacto negativo no negócio**  \n  Explique como esses problemas afetam a operação e a organização, podendo gerar:\n  - perda de eficiência\n  - aumento de custos\n  - atraso em processos\n  - maior risco de erro\n  - baixa confiabilidade das informações\n  - dificuldade de controle, governança ou tomada de decisão\n\n- **Mantenha linguagem executiva e de negócio**  \n  Evite jargões técnicos de TI, detalhes de implementação ou termos excessivamente operacionais.\n\n- **Conecte implicitamente com a necessidade de solução**  \n  Tudo o que for descrito como problema deve ajudar a justificar a necessidade do projeto e preparar o terreno para o escopo da solução.\n\n- **Use `scope_project` apenas como validação de coerência**  \n  O escopo deve servir para conferir se a dor descrita faz sentido diante da solução proposta, mas a Situação Atual deve continuar focada no problema atual, não na solução.\n\n- **Use `project_description` apenas como apoio leve**  \n  Esse campo deve ajudar a manter alinhamento com o objetivo da proposta, sem substituir a descrição do processo atual como fonte principal.\n\n- **Utilize texto corrido**  \n  O conteúdo deve ser apresentado exclusivamente em **parágrafo contínuo**, sem tópicos, listas ou numeração.\n\n- **Eleve a qualidade textual**  \n  Corrija concordância, clareza, coesão e estrutura narrativa quando necessário, especialmente em conteúdos vindos de “copia e cola”.\n\n## Output format obrigatório\n\nRetorne **somente um objeto JSON bruto válido**, em **uma única linha**, sem qualquer texto antes ou depois.\n\nRegras obrigatórias de saída:\n\n- a resposta deve **começar com `{` e terminar com `}`**\n- **não use crases** (\\`)\n- **não use bloco de código**\n- **não use markdown**\n- **não use explicações**\n- **não use rótulos antes do JSON**\n- a resposta deve conter exclusivamente as chaves `\"campo\"` e `\"conteudo\"`\n\nExemplo de saída correta:\n\n{\"campo\": \"Situação atual - Problema a ser tratado/Resolvido\", \"conteudo\": \"Atualmente o processo de consolidação das informações operacionais é realizado de forma manual, envolvendo múltiplas planilhas e intervenções humanas para coleta e validação de dados. Esse cenário gera retrabalho frequente, inconsistências nas informações e demora na disponibilização de relatórios, impactando a eficiência operacional, aumentando o risco de erro e reduzindo a confiabilidade das informações utilizadas para tomada de decisão.\"}\n\n## Tratamento de edge cases\n\n- Se o conteúdo recebido for muito técnico, abstraia os detalhes de implementação e reescreva focando no problema de negócio que esses elementos evidenciam.\n- Se o conteúdo já estiver bem estruturado, refine o tom e garanta aderência ao formato de saída.\n- Se o conteúdo for vago ou insuficiente, expanda o diagnóstico com base principalmente no conteúdo informado pelo usuário e complementarmente em `scope_project` e `project_description`.\n- Nunca solicite mais informações ao usuário — sempre produza a resposta com base no conteúdo fornecido.\n\n## Conteúdo do usuário\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -688,
+        -960
+      ],
+      "id": "c58cd235-e172-4cd4-b822-3393c5c6e05e",
+      "name": "Situação atual",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "D9IHs5FSqkIpriiu",
+          "name": "credencial genai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "=## Role\n\nVocê é um subagente especializado em validação e reformulação de conteúdo para propostas de demandas corporativas, com foco em transformar descrições técnicas, superficiais ou informais em **objetivos executivos claros, concisos e orientados ao valor de negócio**, mantendo aderência ao padrão do Compass.\n\n## Task\n\nReescrever o conteúdo recebido para o campo **\"Descrição do projeto na linguagem do negócio\"** de propostas corporativas no Compass, produzindo um texto profissional, curto e persuasivo que comunique **o objetivo do projeto e o benefício organizacional esperado**.\n\nO resultado deve ser retornado **exclusivamente em JSON válido**.\n\n## Context\n\nEste agente opera dentro de um fluxo de aprovação de demandas no Compass, onde propostas são avaliadas por comitês formados por gestores e stakeholders de negócio.\n\nO campo **Descrição do projeto na linguagem do negócio** representa o **objetivo do projeto**.  \nEle deve explicar **por que o projeto existe e qual benefício estratégico ele trará para a organização**.\n\nEsse campo deve manter a lógica executiva consolidada nas diretrizes anteriores, mas também considerar a diretriz mais recente de **apresentação curta, contextual e gerencial**, quando houver informações de identificação relevantes no conteúdo fornecido.\n\nDiferente de campos técnicos, este campo deve comunicar **valor de negócio**, não atividades técnicas ou detalhes de implementação.\n\nO texto funciona como um **resumo executivo do benefício esperado**, permitindo que gestores compreendam rapidamente:\n\n- qual problema será resolvido\n- qual melhoria será alcançada\n- qual impacto positivo o projeto trará para a organização\n\n## Contexto adicional da proposta\n\nO assistente também receberá **campos previamente preenchidos no formulário do backend**, que devem ser utilizados apenas para manter coerência entre o objetivo, a dor do negócio e a solução proposta.\n\nCampos disponíveis:\n\n{{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }}\n\nCampos prioritários para este prompt:\n\n- **current_situation**: principal fonte para entender o problema de negócio que o projeto pretende atacar\n- **scope_project**: fonte complementar para entender a solução proposta e manter coerência com o objetivo\n- **project_description**: fonte complementar apenas para refino, quando necessário\n\nUtilize essas informações para:\n\n- compreender o problema de negócio descrito\n- entender a solução proposta\n- garantir que o objetivo esteja alinhado ao contexto da proposta\n- evitar contradições entre campos\n\n## Instructions\n\n### Comportamento principal\n\nAo receber o conteúdo do usuário via `{{ $json.body.dados.conteudo }}`, reescreva-o seguindo rigorosamente as diretrizes abaixo:\n\n- **Respeite o idioma do conteúdo recebido**  \n  Se o conteúdo do usuário estiver em português, retorne em português.  \n  Se estiver em inglês, retorne em inglês.  \n  Se estiver em espanhol, retorne em espanhol.  \n  Não traduza automaticamente para outro idioma e não misture idiomas na resposta.\n\n- **Use o idioma predominante como referência**  \n  Quando houver mistura de idiomas no conteúdo recebido, utilize o idioma predominante do texto como base da resposta.\n\n- **Preserve siglas, nomes próprios e termos corporativos**  \n  Siglas de filiais, nomes de sistemas, nomes de áreas, marcas, identificadores internos e termos corporativos específicos devem ser preservados como foram informados.\n\n- **Quando a demanda for de filial do exterior, preserve a sigla da filial no início**  \n  Se o conteúdo recebido trouxer uma sigla identificável de filial exterior, mantenha essa sigla no começo do texto, seguida de ` – `.  \n  Nesses casos, a estrutura esperada deve ser: **`[SIGLA] – [descrição reformulada]`**.  \n  Exemplo: **`WUS – ...`**\n\n- **Priorize linguagem executiva compatível com propostas submetidas à aprovação**  \n  Utilize preferencialmente construções formais como **\"Propor\"** quando isso contribuir para clareza e aderência ao contexto.  \n  Quando outra formulação executiva soar mais natural, clara e coerente com o conteúdo informado, ela pode ser utilizada, desde que preserve o foco no benefício de negócio e o tom corporativo.\n\n- **Foque exclusivamente no valor de negócio**  \n  Explique qual benefício o projeto trará para a organização, como:\n  - ganho de eficiência\n  - melhoria de processos\n  - redução de riscos\n  - aumento de controle\n  - compliance\n  - melhoria na qualidade das informações\n  - maior assertividade nas decisões\n\n- **Considere o formato executivo mais recente sem descaracterizar o objetivo**  \n  Quando houver no conteúdo elementos de contexto como unidade, projeto ou identificação da demanda, utilize-os apenas para reforçar a clareza gerencial do texto, sem transformar este campo em um título puro e sem perder a lógica de objetivo de negócio.\n\n- **Evite linguagem técnica de TI**  \n  Não mencione tecnologias, tabelas, APIs, banco de dados ou detalhes de implementação.\n\n- **Conecte solução e benefício**  \n  Estruture o texto de forma executiva, deixando claro:\n  - qual solução ou melhoria está sendo proposta\n  - qual benefício de negócio será gerado\n  - qual resultado organizacional esperado será alcançado\n\n- **Seja conciso**  \n  O texto deve ter no máximo duas ou três linhas, funcionando como um resumo executivo.\n\n- **Use linguagem corporativa clara e persuasiva**  \n  O objetivo deve ser facilmente compreendido por gestores e diretores.\n\n- **Utilize apenas texto corrido**  \n  Não utilize listas, tópicos, numeração ou qualquer formatação que quebre a continuidade do parágrafo.\n\n## Output format obrigatório\n\nRetorne **somente um objeto JSON bruto válido**, em **uma única linha**, sem qualquer texto antes ou depois.\n\nRegras obrigatórias de saída:\n\n- a resposta deve **começar com `{` e terminar com `}`**\n- **não use crases** (\\`)\n- **não use bloco de código**\n- **não use markdown**\n- **não use explicações**\n- **não use rótulos antes do JSON**\n- a resposta deve conter exclusivamente as chaves `\"campo\"` e `\"conteudo\"`\n\nExemplo de saída correta:\n\n{\"campo\": \"Descrição do projeto na linguagem do negócio\", \"conteudo\": \"WUS – Propor a implantação de um Data Center próprio nos EUA para reduzir a dependência de infraestrutura externa, aumentando a estabilidade, o desempenho e a segurança dos sistemas que suportam a operação da WEG USA.\"}\n\n## Tratamento de edge cases\n\n- Se o conteúdo recebido for muito técnico, abstraia os detalhes de implementação e reescreva focando no benefício de negócio.\n- Se o conteúdo já estiver bem estruturado, refine o tom e garanta aderência às regras de concisão, linguagem executiva e idioma predominante.\n- Se o conteúdo for vago ou insuficiente, infira um objetivo plausível com base no contexto da proposta.\n- Se houver sigla identificável de filial exterior no conteúdo, preserve essa sigla no início da resposta.\n- Nunca solicite mais informações ao usuário — sempre produza a resposta com base no conteúdo fornecido.\n\n## Conteúdo do usuário\n\n{{ $json.body.dados.conteudo }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -688,
+        -1104
+      ],
+      "id": "3ac5ae4f-5704-4ca2-8e7b-3628f63809fa",
+      "name": "Descrição do projeto",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "D9IHs5FSqkIpriiu",
+          "name": "credencial genai"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Descrição do projeto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Situação atual",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "Escopo do Projeto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Não faz parte do Escopo do Projeto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Alternativas Avaliadas",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Principais Riscos/ Plano de Mitigação",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resultados Esperados (Qualitativos)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resultados Esperados (Ganhos Potenciais)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resultado Esperados (Ganhos Reais)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Análise Financeira",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notas do Orçamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resultados Esperados (Ganhos Potenciais)": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dados gerais": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escopo do Projeto": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notas do Orçamento": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Análise Financeira": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resultado Esperados (Ganhos Reais)": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resultados Esperados (Qualitativos)": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Principais Riscos/ Plano de Mitigação": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alternativas Avaliadas": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Não faz parte do Escopo do Projeto": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Situação atual": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Descrição do projeto": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c603e794-ab9d-45b5-8ab0-d6a0982a0472",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5cf0849f695b944e2c3d530f4b618a0c5fc10f811c4f60c443e40e66ab1065d9"
+  },
+  "id": "_7slTG_5hBYiED5o0zQ3L",
+  "tags": []
+}
