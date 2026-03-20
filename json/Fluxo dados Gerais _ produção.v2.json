@@ -60,29 +60,6 @@
                 },
                 "conditions": [
                   {
-                    "id": "1396f62e-6103-4403-9224-b560c7fa4b14",
-                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
-                    "rightValue": "previous_approvals",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "name": "filter.operator.equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              }
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 3
-                },
-                "conditions": [
-                  {
                     "id": "59fa90e8-ac91-4091-9271-5af0600b9f6b",
                     "leftValue": "={{ $json.body?.dados?.campo || '' }}",
                     "rightValue": "scope_project",
@@ -883,13 +860,6 @@
         ],
         [
           {
-            "node": "Erro de validação/roteamento",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
             "node": "Escopo do Projeto",
             "type": "main",
             "index": 0
@@ -951,7 +921,6 @@
             "index": 0
           }
         ],
-        [],
         [
           {
             "node": "Erro de validação/roteamento",

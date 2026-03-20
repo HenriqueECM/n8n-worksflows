@@ -48,3 +48,7 @@ Arquivo gerado: `json/Fluxo dados Gerais _ produção.v2.json`
 1. Considerar consolidar os múltiplos HTTP nodes em uma estratégia com prompt dinâmico (fase 2), para reduzir custo de manutenção.
 2. Adicionar telemetria mínima por requisição (tempo de execução, campo solicitado, status de erro) para monitorar uso em alto volume.
 3. Versionar prompts por campo para reduzir regressão quando houver ajustes de conteúdo.
+
+## Ajuste após revisão visual
+- Removida a regra explícita de `previous_approvals` no `Switch` principal para que esse caso também caia no **Fallback** do segundo switch.
+- Mantido o padrão correto: erros de roteamento do segundo switch passam pelo conector **Fallback** (não por saída de campo específica).
