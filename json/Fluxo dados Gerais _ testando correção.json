@@ -1,5 +1,5 @@
 {
-  "name": "Fluxo dados Gerais | produção",
+  "name": "Fluxo dados Gerais | testando correção",
   "nodes": [
     {
       "parameters": {
@@ -15,7 +15,7 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
                     "rightValue": "project_description",
                     "operator": {
                       "type": "string",
@@ -38,7 +38,7 @@
                 "conditions": [
                   {
                     "id": "26bfc29f-04f1-4845-937e-428a2d7e762e",
-                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
                     "rightValue": "current_situation",
                     "operator": {
                       "type": "string",
@@ -60,31 +60,8 @@
                 },
                 "conditions": [
                   {
-                    "id": "1396f62e-6103-4403-9224-b560c7fa4b14",
-                    "leftValue": "={{ $json.body.dados.campo }}",
-                    "rightValue": "=previous_approvals",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "name": "filter.operator.equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              }
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 3
-                },
-                "conditions": [
-                  {
                     "id": "59fa90e8-ac91-4091-9271-5af0600b9f6b",
-                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
                     "rightValue": "scope_project",
                     "operator": {
                       "type": "string",
@@ -107,8 +84,8 @@
                 "conditions": [
                   {
                     "id": "07c54488-a72e-443e-b84d-13ce52a1220d",
-                    "leftValue": "={{ $json.body.dados.campo }}",
-                    "rightValue": "=not_scope",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
+                    "rightValue": "not_scope",
                     "operator": {
                       "type": "string",
                       "operation": "equals"
@@ -129,7 +106,7 @@
                 "conditions": [
                   {
                     "id": "80477a72-664f-4059-a6f8-9542232c1cc1",
-                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
                     "rightValue": "alternatives_evaluated",
                     "operator": {
                       "type": "string",
@@ -152,7 +129,7 @@
                 "conditions": [
                   {
                     "id": "62fb6667-0381-4e84-9878-a5cfead70453",
-                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
                     "rightValue": "risks_plan_mitigation",
                     "operator": {
                       "type": "string",
@@ -175,7 +152,7 @@
                 "conditions": [
                   {
                     "id": "3948e7b0-71f2-47ad-92d8-f967abb769ee",
-                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
                     "rightValue": "qualitative_gains",
                     "operator": {
                       "type": "string",
@@ -198,7 +175,7 @@
                 "conditions": [
                   {
                     "id": "b4e3e69b-d6d5-42d6-9af6-f826f7a46a12",
-                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
                     "rightValue": "potential_gains",
                     "operator": {
                       "type": "string",
@@ -221,7 +198,7 @@
                 "conditions": [
                   {
                     "id": "5c7ea867-9ade-4736-9de9-9a31f13cb46b",
-                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
                     "rightValue": "real_gains",
                     "operator": {
                       "type": "string",
@@ -244,7 +221,7 @@
                 "conditions": [
                   {
                     "id": "24297414-6d04-4200-bcf8-f523d4b215fe",
-                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
                     "rightValue": "financial_analytics",
                     "operator": {
                       "type": "string",
@@ -267,7 +244,7 @@
                 "conditions": [
                   {
                     "id": "807284a0-ba88-409d-9988-c46aacd37ec6",
-                    "leftValue": "={{ $json.body.dados.campo }}",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
                     "rightValue": "proposed_costs_notes",
                     "operator": {
                       "type": "string",
@@ -281,43 +258,45 @@
             }
           ]
         },
-        "options": {}
+        "options": {
+          "fallbackOutput": "extra"
+        }
       },
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        -1440,
-        -352
+        -608,
+        672
       ],
-      "id": "6f7a6eb5-3afa-46bf-8c24-ad5f0c5f1eb1",
+      "id": "32466477-932d-461f-8fb1-f4fa4171d5f5",
       "name": "Switch"
     },
     {
       "parameters": {
-        "jsCode": "// Pega a resposta do nó anterior (independente de qual nó HTTP veio)\nlet rawResponse = $input.first().json.response;\n\ntry {\n  if (!rawResponse) throw new Error(\"A resposta da IA veio vazia\");\n\n  // 1. Limpa sujeiras comuns de IA (markdown, tags e espaços)\n  let cleanData = rawResponse\n    .replace(/```json|```/g, \"\")\n    .replace(/<[^>]*>/g, \"\")\n    .trim();\n\n  // 2. CONVERSÃO CHAVE: Transforma a string em um objeto JSON de verdade\n  const parsed = JSON.parse(cleanData);\n\n  // 3. Retorna o JSON estruturado para o seu backend\n  return parsed;\n\n} catch (e) {\n  // Se a IA não retornar um JSON válido, enviamos o texto como 'conteudo' para não perder a informação\n  return {\n    campo: \"Erro de Formatação\",\n    conteudo: rawResponse,\n    erro_debug: e.message\n  };\n}"
+        "jsCode": "const input = $input.first().json || {};\nconst rawResponse = input.response;\n\nconst normalizeParsed = (parsed) => {\n  if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {\n    return {\n      campo: parsed.campo ?? input.body?.dados?.campo ?? null,\n      conteudo: (parsed.conteudo ?? '').toString().trim() || JSON.stringify(parsed),\n      erro: parsed.erro ?? null,\n      debug: parsed.debug ?? null,\n    };\n  }\n\n  return {\n    campo: input.body?.dados?.campo ?? null,\n    conteudo: (parsed ?? '').toString().trim(),\n    erro: null,\n    debug: null,\n  };\n};\n\ntry {\n  if (rawResponse === undefined || rawResponse === null) {\n    throw new Error('A resposta da IA veio vazia');\n  }\n\n  if (typeof rawResponse === 'object') {\n    return normalizeParsed(rawResponse);\n  }\n\n  const asString = rawResponse.toString();\n  const cleanData = asString.replace(/```json|```/gi, '').replace(/<[^>]*>/g, '').trim();\n\n  if (!cleanData) {\n    throw new Error('A resposta da IA veio vazia após limpeza');\n  }\n\n  try {\n    const parsed = JSON.parse(cleanData);\n    return normalizeParsed(parsed);\n  } catch {\n    return normalizeParsed(cleanData);\n  }\n} catch (e) {\n  return {\n    campo: input.body?.dados?.campo ?? null,\n    conteudo: 'Falha ao processar resposta da IA.',\n    erro: {\n      code: 'PARSE_ERROR',\n      message: e.message,\n    },\n    debug: {\n      rawType: typeof rawResponse,\n    },\n  };\n}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        128,
-        -208
+        720,
+        816
       ],
-      "id": "17e050d5-4651-4ae2-aa97-0a5edcc36122",
+      "id": "a3e9f1ff-185e-441a-8061-5a5edafc5bad",
       "name": "Code in JavaScript"
     },
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={{ { \"resultado\": { \"conteudo\": $json.conteudo } } }}",
+        "responseBody": "={{ { resultado: { campo: $json.campo ?? null, conteudo: $json.conteudo ?? '' }, meta: { erro: $json.erro ?? null, debug: $json.debug ?? null } } }}",
         "options": {}
       },
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        336,
-        -208
+        1152,
+        816
       ],
-      "id": "688d27c1-2da9-4258-bc59-07cad5a454f5",
+      "id": "cfa73135-14af-4341-86c6-a2c38fd5090f",
       "name": "Respond to Webhook"
     },
     {
@@ -348,10 +327,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -688,
-        144
+        -16,
+        1200
       ],
-      "id": "19cb4dc7-e150-4ca3-b0e4-bdded6588f76",
+      "id": "b418bc48-8dd6-4ad8-8ec8-e98d23be1d04",
       "name": "Resultados Esperados (Ganhos Potenciais)",
       "credentials": {
         "httpHeaderAuth": {
@@ -374,13 +353,22 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $json.body.aba }}",
+                    "leftValue": "={{ $json._validation?.isValid ?? false }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    },
+                    "id": "validation-ok"
+                  },
+                  {
+                    "leftValue": "={{ $json.body?.aba || '' }}",
                     "rightValue": "dados_gerais",
                     "operator": {
                       "type": "string",
                       "operation": "equals"
                     },
-                    "id": "2ed52d4f-119b-4fee-887c-7e60b4c2667c"
+                    "id": "aba-dados-gerais"
                   }
                 ],
                 "combinator": "and"
@@ -388,15 +376,17 @@
             }
           ]
         },
-        "options": {}
+        "options": {
+          "fallbackOutput": "extra"
+        }
       },
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        -1664,
-        -192
+        -1056,
+        848
       ],
-      "id": "6016227e-37ad-439f-b5ad-b38de2e9c7fc",
+      "id": "9e7e6e1f-df70-47c6-b322-27d712615993",
       "name": "Switch1"
     },
     {
@@ -410,10 +400,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -1920,
-        -192
+        -1600,
+        848
       ],
-      "id": "67f64322-e40c-4a9f-b16d-4c25d2ef0d5b",
+      "id": "ad7ecf3f-2518-4d72-afba-d7cb134e43a0",
       "name": "dados gerais",
       "webhookId": "dee934b3-f2a2-4041-95ce-05cc9c9de886",
       "credentials": {
@@ -451,10 +441,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -688,
-        -784
+        -16,
+        272
       ],
-      "id": "72adfcc6-8af8-4dd7-8607-d802f8540b8d",
+      "id": "c58ce072-4d61-4cab-a9e8-599af50c0766",
       "name": "Escopo do Projeto",
       "credentials": {
         "httpHeaderAuth": {
@@ -491,10 +481,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -688,
-        704
+        -16,
+        1760
       ],
-      "id": "2f152cfc-306f-431c-862b-ecc4e310072b",
+      "id": "701ad2f2-3264-40d3-a2cd-d9f4edf4b7dc",
       "name": "Notas do Orçamento",
       "credentials": {
         "httpHeaderAuth": {
@@ -531,10 +521,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -688,
-        528
+        -16,
+        1584
       ],
-      "id": "09df5d5b-4d3e-493d-bce7-3787b20e81ef",
+      "id": "697fa568-7617-4c37-b6c5-3ef4345d4cc5",
       "name": "Análise Financeira",
       "credentials": {
         "httpHeaderAuth": {
@@ -571,10 +561,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -688,
-        320
+        -16,
+        1376
       ],
-      "id": "b03de3bd-5992-4a30-8701-8cd4ff7b2af5",
+      "id": "d9bfadc9-1a00-4932-99dd-a9b12400c105",
       "name": "Resultado Esperados (Ganhos Reais)",
       "credentials": {
         "httpHeaderAuth": {
@@ -611,10 +601,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -688,
-        -48
+        -16,
+        1008
       ],
-      "id": "3caf953b-1abc-45a5-b1f2-1edf555f0ab4",
+      "id": "31281519-84ee-4348-b928-8121dbf3a885",
       "name": "Resultados Esperados (Qualitativos)",
       "credentials": {
         "httpHeaderAuth": {
@@ -651,10 +641,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -688,
-        -240
+        -16,
+        816
       ],
-      "id": "cfbf02e9-a5e0-47dc-9ba7-ce9e3254aa90",
+      "id": "0954e6f1-ade4-4b9f-83b1-7fb6177e609e",
       "name": "Principais Riscos/ Plano de Mitigação",
       "credentials": {
         "httpHeaderAuth": {
@@ -691,10 +681,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -688,
-        -416
+        -16,
+        640
       ],
-      "id": "8fa42938-478b-46be-a3ab-0986c2e27fe6",
+      "id": "74546608-0bdb-462a-99ec-2ae37a51036d",
       "name": "Alternativas Avaliadas",
       "credentials": {
         "httpHeaderAuth": {
@@ -731,10 +721,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -688,
-        -608
+        -16,
+        448
       ],
-      "id": "7dc6ae3d-ac98-4d40-bafa-8c41eb348889",
+      "id": "878ea47b-4fb1-45d0-9f0e-1eeafbbaf7ab",
       "name": "Não faz parte do Escopo do Projeto",
       "credentials": {
         "httpHeaderAuth": {
@@ -771,10 +761,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -688,
-        -960
+        -16,
+        96
       ],
-      "id": "c58cd235-e172-4cd4-b822-3393c5c6e05e",
+      "id": "c5e503bb-5dec-4816-b236-7eefefa19b4a",
       "name": "Situação atual",
       "credentials": {
         "httpHeaderAuth": {
@@ -811,10 +801,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -688,
-        -1104
+        -16,
+        -48
       ],
-      "id": "3ac5ae4f-5704-4ca2-8e7b-3628f63809fa",
+      "id": "3cbc1994-3a86-4a08-945e-ef7dcd9a9398",
       "name": "Descrição do projeto",
       "credentials": {
         "httpHeaderAuth": {
@@ -822,6 +812,32 @@
           "name": "credencial genai"
         }
       }
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json || {};\nconst body = input.body ?? {};\nconst dados = body.dados ?? {};\nconst conteudo = (dados.conteudo ?? '').toString().trim();\nconst aba = (body.aba ?? '').toString().trim();\nconst campo = (dados.campo ?? '').toString().trim();\n\nconst errors = [];\nif (!aba) errors.push('Campo obrigatório ausente: body.aba');\nif (!campo) errors.push('Campo obrigatório ausente: body.dados.campo');\nif (!conteudo) errors.push('Campo obrigatório ausente: body.dados.conteudo');\n\nreturn {\n  ...input,\n  body: {\n    ...body,\n    dados: {\n      ...dados,\n      conteudo,\n      campo,\n      estado_atual: dados.estado_atual ?? { dados_gerais: {} },\n    },\n  },\n  _validation: {\n    isValid: errors.length === 0,\n    errors,\n  },\n};"
+      },
+      "id": "a44a1874-29ad-4bf3-af96-acd2c302e082",
+      "name": "Validar entrada",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1328,
+        848
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json || {};\nconst aba = (input.body?.aba ?? '').toString().trim();\nconst campo = (input.body?.dados?.campo ?? '').toString().trim();\nconst validationErrors = input._validation?.errors ?? [];\n\nlet code = 'ROUTING_ERROR';\nlet message = 'Não foi possível rotear a requisição no workflow.';\n\nif (validationErrors.length > 0) {\n  code = 'VALIDATION_ERROR';\n  message = 'Payload inválido. Corrija os campos obrigatórios e tente novamente.';\n} else if (aba && aba !== 'dados_gerais') {\n  code = 'UNSUPPORTED_ABA';\n  message = `Aba não suportada: ${aba}. Valor esperado: dados_gerais.`;\n} else if (campo) {\n  code = 'UNSUPPORTED_CAMPO';\n  message = `Campo não suportado: ${campo}.`;\n}\n\nreturn {\n  campo: campo || null,\n  conteudo: message,\n  erro: { code, message, details: validationErrors },\n  debug: { aba: aba || null, campo: campo || null },\n};"
+      },
+      "id": "b7392b46-cbfb-4156-9c8d-c40679883961",
+      "name": "Erro de validação/roteamento",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        2096
+      ]
     }
   ],
   "pinData": {},
@@ -842,7 +858,6 @@
             "index": 0
           }
         ],
-        [],
         [
           {
             "node": "Escopo do Projeto",
@@ -905,6 +920,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Erro de validação/roteamento",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -938,6 +960,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Erro de validação/roteamento",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -945,7 +974,7 @@
       "main": [
         [
           {
-            "node": "Switch1",
+            "node": "Validar entrada",
             "type": "main",
             "index": 0
           }
@@ -1061,19 +1090,39 @@
           }
         ]
       ]
+    },
+    "Validar entrada": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro de validação/roteamento": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate",
-    "availableInMCP": false
+    "binaryMode": "separate"
   },
-  "versionId": "c603e794-ab9d-45b5-8ab0-d6a0982a0472",
+  "versionId": "dc2ecdac-7712-4304-838f-df706f7dbdd6",
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "5cf0849f695b944e2c3d530f4b618a0c5fc10f811c4f60c443e40e66ab1065d9"
   },
-  "id": "_7slTG_5hBYiED5o0zQ3L",
+  "id": "MoJg0AsfvD6sQkDW",
   "tags": []
 }
