@@ -1,0 +1,11 @@
+# Pontos a considerar sobre o fluxo
+
+-> atualmente o backend manda contrato de payload padrão com nomes de 'campos' padronizadas sem margem de erro, so caso se adicionasse mais um campo, mas isso nao seria problema porque a manutenção e ajustes é facil de adicionar um campo
+
+-> front end impede que venha conteudo do campo vazio, por quê? atualmente na tela para ter geração do IA onde fluxo vai fazer, precisa obrigatoriamente um campo preenchido antes de liberar para gerar com IA
+
+-> podemos pensar na fase final depois da correção se for necessário se podemos otimizar algo, diminuindo https, algo assim, porque assim, o https (Inteligencia artificial) tem seu prompt especifico para cada campo
+com isso precisamos talves pensar se é a melhor forma assim atualmente ou concentrar o prompt em algum lugar para puxar quando for necessario e etc
+
+-> deve considerar que esse sistema vai gerir grandes volumes de propostas talvez, porque são mais de 300 comissões na empresa
+com isso pode ser que varios lideres podem estar gerando com IA no campo
