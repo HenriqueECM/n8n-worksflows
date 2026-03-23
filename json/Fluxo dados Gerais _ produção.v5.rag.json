@@ -1,103 +1,668 @@
 {
-  "name": "Fluxo dados Gerais | produção | v5 db+cache+rag",
-  "goal": "Adicionar RAG para recuperar semântica histórica de propostas e melhorar qualidade da resposta da IA.",
-  "base": "v4 db+cache",
-  "pipeline_additions": [
+  "name": "Fluxo dados Gerais | produção | v5 rag",
+  "nodes": [
     {
-      "step": "A",
-      "node": "RAG Query Builder",
-      "logic": "monta query semântica com campo + conteudo + metadados da proposta"
-    },
-    {
-      "step": "B",
-      "node": "Embedding Query",
-      "options": [
-        "OpenAI embeddings API",
-        "modelo interno embeddings"
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
+                    "rightValue": "project_description",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "0a506a3f-0f7b-4193-8357-9ec173f4fdd7"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "26bfc29f-04f1-4845-937e-428a2d7e762e",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
+                    "rightValue": "current_situation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "59fa90e8-ac91-4091-9271-5af0600b9f6b",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
+                    "rightValue": "scope_project",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "07c54488-a72e-443e-b84d-13ce52a1220d",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
+                    "rightValue": "not_scope",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "80477a72-664f-4059-a6f8-9542232c1cc1",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
+                    "rightValue": "alternatives_evaluated",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "62fb6667-0381-4e84-9878-a5cfead70453",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
+                    "rightValue": "risks_plan_mitigation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3948e7b0-71f2-47ad-92d8-f967abb769ee",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
+                    "rightValue": "qualitative_gains",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b4e3e69b-d6d5-42d6-9af6-f826f7a46a12",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
+                    "rightValue": "potential_gains",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5c7ea867-9ade-4736-9de9-9a31f13cb46b",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
+                    "rightValue": "real_gains",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "24297414-6d04-4200-bcf8-f523d4b215fe",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
+                    "rightValue": "financial_analytics",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "807284a0-ba88-409d-9988-c46aacd37ec6",
+                    "leftValue": "={{ $json.body?.dados?.campo || '' }}",
+                    "rightValue": "proposed_costs_notes",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -1440,
+        -352
       ],
-      "output": "query_embedding"
+      "id": "6f7a6eb5-3afa-46bf-8c24-ad5f0c5f1eb1",
+      "name": "Switch"
     },
     {
-      "step": "C",
-      "node": "Vector Search (MongoDB Atlas Vector Search ou serviço vetorial)",
-      "k": 5,
-      "filters": ["campo", "area_negocio", "tipo_proposta", "status_aprovacao"]
+      "parameters": {
+        "jsCode": "const input = $input.first().json || {};\nconst rawResponse = input.response;\n\nconst normalizeParsed = (parsed) => {\n  if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {\n    return {\n      campo: parsed.campo ?? input.body?.dados?.campo ?? null,\n      conteudo: (parsed.conteudo ?? '').toString().trim() || JSON.stringify(parsed),\n      erro: parsed.erro ?? null,\n      debug: parsed.debug ?? null,\n    };\n  }\n\n  return {\n    campo: input.body?.dados?.campo ?? null,\n    conteudo: (parsed ?? '').toString().trim(),\n    erro: null,\n    debug: null,\n  };\n};\n\ntry {\n  if (rawResponse === undefined || rawResponse === null) {\n    throw new Error('A resposta da IA veio vazia');\n  }\n\n  if (typeof rawResponse === 'object') {\n    return normalizeParsed(rawResponse);\n  }\n\n  const asString = rawResponse.toString();\n  const cleanData = asString.replace(/```json|```/gi, '').replace(/<[^>]*>/g, '').trim();\n\n  if (!cleanData) {\n    throw new Error('A resposta da IA veio vazia após limpeza');\n  }\n\n  try {\n    const parsed = JSON.parse(cleanData);\n    return normalizeParsed(parsed);\n  } catch {\n    return normalizeParsed(cleanData);\n  }\n} catch (e) {\n  return {\n    campo: input.body?.dados?.campo ?? null,\n    conteudo: 'Falha ao processar resposta da IA.',\n    erro: {\n      code: 'PARSE_ERROR',\n      message: e.message,\n    },\n    debug: {\n      rawType: typeof rawResponse,\n    },\n  };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        128,
+        -208
+      ],
+      "id": "17e050d5-4651-4ae2-aa97-0a5edcc36122",
+      "name": "Code in JavaScript"
     },
     {
-      "step": "D",
-      "node": "Context Assembler",
-      "logic": "consolida top_k trechos relevantes em rag_context"
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { resultado: { campo: $json.campo ?? null, conteudo: $json.conteudo ?? '' }, meta: { erro: $json.erro ?? null, debug: $json.debug ?? null } } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        336,
+        -208
+      ],
+      "id": "688d27c1-2da9-4258-bc59-07cad5a454f5",
+      "name": "Respond to Webhook"
     },
     {
-      "step": "E",
-      "node": "Renderizar Prompt (com RAG)",
-      "logic": "injeta rag_context + conteudo + dadosGerais no template"
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json._validation?.isValid ?? false }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    },
+                    "id": "validation-ok"
+                  },
+                  {
+                    "leftValue": "={{ $json.body?.aba || '' }}",
+                    "rightValue": "dados_gerais",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "aba-dados-gerais"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -1664,
+        -192
+      ],
+      "id": "6016227e-37ad-439f-b5ad-b38de2e9c7fc",
+      "name": "Switch1"
     },
     {
-      "step": "F",
-      "node": "IA - Prompt Dinâmico",
-      "input": "prompt final com contexto RAG"
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "compass",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1920,
+        -192
+      ],
+      "id": "67f64322-e40c-4a9f-b16d-4c25d2ef0d5b",
+      "name": "dados gerais",
+      "webhookId": "dee934b3-f2a2-4041-95ce-05cc9c9de886",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "B1Sd6719J7QXnxGo",
+          "name": "credencial webhook"
+        }
+      }
     },
     {
-      "step": "G",
-      "node": "Persistência pós-resposta",
-      "writes": [
-        "proposta original",
-        "resultado gerado",
-        "metadados execução",
-        "embeddings para indexação futura"
+      "parameters": {
+        "jsCode": "const input = $input.first().json || {};\nconst body = input.body ?? {};\nconst dados = body.dados ?? {};\nconst conteudo = (dados.conteudo ?? '').toString().trim();\nconst aba = (body.aba ?? '').toString().trim();\nconst campo = (dados.campo ?? '').toString().trim();\n\nconst errors = [];\nif (!aba) errors.push('Campo obrigatório ausente: body.aba');\nif (!campo) errors.push('Campo obrigatório ausente: body.dados.campo');\nif (!conteudo) errors.push('Campo obrigatório ausente: body.dados.conteudo');\n\nreturn {\n  ...input,\n  body: {\n    ...body,\n    dados: {\n      ...dados,\n      conteudo,\n      campo,\n      estado_atual: dados.estado_atual ?? { dados_gerais: {} },\n    },\n  },\n  _validation: {\n    isValid: errors.length === 0,\n    errors,\n  },\n};"
+      },
+      "id": "validate-input-node",
+      "name": "Validar entrada",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json || {};\nconst aba = (input.body?.aba ?? '').toString().trim();\nconst campo = (input.body?.dados?.campo ?? '').toString().trim();\nconst validationErrors = input._validation?.errors ?? [];\n\nlet code = 'ROUTING_ERROR';\nlet message = 'Não foi possível rotear a requisição no workflow.';\n\nif (validationErrors.length > 0) {\n  code = 'VALIDATION_ERROR';\n  message = 'Payload inválido. Corrija os campos obrigatórios e tente novamente.';\n} else if (aba && aba !== 'dados_gerais') {\n  code = 'UNSUPPORTED_ABA';\n  message = `Aba não suportada: ${aba}. Valor esperado: dados_gerais.`;\n} else if (campo) {\n  code = 'UNSUPPORTED_CAMPO';\n  message = `Campo não suportado: ${campo}.`;\n}\n\nreturn {\n  campo: campo || null,\n  conteudo: message,\n  erro: { code, message, details: validationErrors },\n  debug: { aba: aba || null, campo: campo || null },\n};"
+      },
+      "id": "routing-error-node",
+      "name": "Erro de validação/roteamento",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        420,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json || {};\nconst campo = (input.body?.dados?.campo || '').toString().trim();\nconst conteudo = (input.body?.dados?.conteudo || '').toString();\nconst dadosGerais = input.body?.dados?.estado_atual?.dados_gerais ?? {};\nconst globalCache = this.getWorkflowStaticData('global');\nconst cacheKey = `prompt:${campo}:active`;\nconst cacheItem = globalCache[cacheKey];\n\nlet promptTemplate = input.prompt_template ?? input.body?.dados?.prompt_template ?? cacheItem?.prompt_template ?? null;\nlet promptVersion = input.prompt_version ?? input.body?.dados?.prompt_version ?? cacheItem?.prompt_version ?? null;\nlet source = cacheItem?.prompt_template ? 'cache' : 'payload';\n\nif (!promptTemplate) {\n  return {\n    ...input,\n    erro: { code: 'PROMPT_NOT_FOUND', message: `Prompt não encontrado para o campo: ${campo}` },\n    debug: { campo, cacheKey },\n  };\n}\n\nif (!cacheItem || cacheItem.prompt_template !== promptTemplate || cacheItem.prompt_version !== promptVersion) {\n  globalCache[cacheKey] = {\n    prompt_template: promptTemplate,\n    prompt_version: promptVersion ?? 1,\n    updated_at: new Date().toISOString(),\n  };\n}\n\nconst ragContext = (input.rag_context ?? '').toString().trim();\nlet renderedPrompt = promptTemplate\n  .replaceAll('{{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }}', JSON.stringify(dadosGerais))\n  .replaceAll('{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }', JSON.stringify(dadosGerais))\n  .replaceAll('{{ $json.body.dados.conteudo }}', conteudo)\n  .replaceAll('{ $json.body.dados.conteudo }', conteudo);\n\nif (ragContext) {\n  if (renderedPrompt.includes('{{RAG_CONTEXT}}')) {\n    renderedPrompt = renderedPrompt.replaceAll('{{RAG_CONTEXT}}', ragContext);\n  } else {\n    renderedPrompt = `${renderedPrompt}\\n\\n## Contexto RAG\\n${ragContext}`;\n  }\n}\n\nreturn {\n  ...input,\n  prompt: renderedPrompt,\n  prompt_version: promptVersion ?? 1,\n  cache_hit: Boolean(cacheItem?.prompt_template),\n  prompt_source: source,\n  rag_hit_count: input.rag_hit_count ?? 0,\n};"
+      },
+      "id": "resolve-prompt-db-cache",
+      "name": "Resolver Prompt (DB+Cache)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1040,
+        -320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "={{ $json.prompt }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      },
+      "id": "f20fe78f-1759-4999-95b3-651d0da8fd2f",
+      "name": "IA - Prompt Dinâmico",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -760,
+        -320
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "D9IHs5FSqkIpriiu",
+          "name": "credencial genai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json || {};\nconst ragItems = input.body?.dados?.rag_items ?? [];\nconst ragContextFromPayload = (input.body?.dados?.rag_context ?? '').toString().trim();\n\nlet ragContext = ragContextFromPayload;\nif (!ragContext && Array.isArray(ragItems) && ragItems.length) {\n  ragContext = ragItems\n    .map((item, idx) => {\n      const source = item?.source ?? `fonte_${idx + 1}`;\n      const text = (item?.text ?? '').toString().trim();\n      return text ? `• [${source}] ${text}` : '';\n    })\n    .filter(Boolean)\n    .join('\\n');\n}\n\nreturn {\n  ...input,\n  rag_context: ragContext,\n  rag_hit_count: Array.isArray(ragItems) ? ragItems.length : (ragContext ? 1 : 0),\n};"
+      },
+      "id": "rag-context-builder",
+      "name": "RAG Context Builder",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1780,
+        -192
       ]
     }
   ],
-  "mongodb_collections": {
-    "proposals": {
-      "description": "documento principal da proposta + metadados",
-      "fields": [
-        "proposal_id",
-        "campo",
-        "conteudo_original",
-        "conteudo_gerado",
-        "status",
-        "timestamps",
-        "tags"
+  "pinData": {},
+  "connections": {
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
-    "proposal_chunks": {
-      "description": "chunks para recuperação semântica",
-      "fields": [
-        "proposal_id",
-        "chunk_id",
-        "chunk_text",
-        "embedding",
-        "campo",
-        "metadata"
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro de validação/roteamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
-    "ai_runs": {
-      "description": "telemetria da execução",
-      "fields": [
-        "run_id",
-        "proposal_id",
-        "prompt_version",
-        "cache_hit",
-        "rag_hit_count",
-        "latency_ms",
-        "error_code"
+    "dados gerais": {
+      "main": [
+        [
+          {
+            "node": "Validar entrada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar entrada": {
+      "main": [
+        [
+          {
+            "node": "RAG Context Builder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro de validação/roteamento": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Resolver Prompt (DB+Cache)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resolver Prompt (DB+Cache)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resolver Prompt (DB+Cache)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resolver Prompt (DB+Cache)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resolver Prompt (DB+Cache)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resolver Prompt (DB+Cache)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resolver Prompt (DB+Cache)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resolver Prompt (DB+Cache)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resolver Prompt (DB+Cache)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resolver Prompt (DB+Cache)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resolver Prompt (DB+Cache)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro de validação/roteamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IA - Prompt Dinâmico": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolver Prompt (DB+Cache)": {
+      "main": [
+        [
+          {
+            "node": "IA - Prompt Dinâmico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RAG Context Builder": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
-  "rag_notes": {
-    "recommended_k": 5,
-    "max_context_chars": 6000,
-    "guardrails": [
-      "se rag_context vazio, seguir semântico fallback",
-      "nunca inserir conteúdo confidencial sem filtro",
-      "registrar fontes usadas no meta.debug"
-    ]
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
   },
-  "benefits": [
-    "respostas mais consistentes com histórico real",
-    "aprendizado semântico contínuo",
-    "melhor suporte a análises futuras"
-  ]
+  "versionId": "01887d21-3abb-4524-a71f-dd4027c0a733",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5cf0849f695b944e2c3d530f4b618a0c5fc10f811c4f60c443e40e66ab1065d9"
+  },
+  "id": "_7slTG_5hBYiED5o0zQ3L",
+  "tags": []
 }
