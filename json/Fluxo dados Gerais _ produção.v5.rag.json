@@ -1,0 +1,103 @@
+{
+  "name": "Fluxo dados Gerais | produção | v5 db+cache+rag",
+  "goal": "Adicionar RAG para recuperar semântica histórica de propostas e melhorar qualidade da resposta da IA.",
+  "base": "v4 db+cache",
+  "pipeline_additions": [
+    {
+      "step": "A",
+      "node": "RAG Query Builder",
+      "logic": "monta query semântica com campo + conteudo + metadados da proposta"
+    },
+    {
+      "step": "B",
+      "node": "Embedding Query",
+      "options": [
+        "OpenAI embeddings API",
+        "modelo interno embeddings"
+      ],
+      "output": "query_embedding"
+    },
+    {
+      "step": "C",
+      "node": "Vector Search (MongoDB Atlas Vector Search ou serviço vetorial)",
+      "k": 5,
+      "filters": ["campo", "area_negocio", "tipo_proposta", "status_aprovacao"]
+    },
+    {
+      "step": "D",
+      "node": "Context Assembler",
+      "logic": "consolida top_k trechos relevantes em rag_context"
+    },
+    {
+      "step": "E",
+      "node": "Renderizar Prompt (com RAG)",
+      "logic": "injeta rag_context + conteudo + dadosGerais no template"
+    },
+    {
+      "step": "F",
+      "node": "IA - Prompt Dinâmico",
+      "input": "prompt final com contexto RAG"
+    },
+    {
+      "step": "G",
+      "node": "Persistência pós-resposta",
+      "writes": [
+        "proposta original",
+        "resultado gerado",
+        "metadados execução",
+        "embeddings para indexação futura"
+      ]
+    }
+  ],
+  "mongodb_collections": {
+    "proposals": {
+      "description": "documento principal da proposta + metadados",
+      "fields": [
+        "proposal_id",
+        "campo",
+        "conteudo_original",
+        "conteudo_gerado",
+        "status",
+        "timestamps",
+        "tags"
+      ]
+    },
+    "proposal_chunks": {
+      "description": "chunks para recuperação semântica",
+      "fields": [
+        "proposal_id",
+        "chunk_id",
+        "chunk_text",
+        "embedding",
+        "campo",
+        "metadata"
+      ]
+    },
+    "ai_runs": {
+      "description": "telemetria da execução",
+      "fields": [
+        "run_id",
+        "proposal_id",
+        "prompt_version",
+        "cache_hit",
+        "rag_hit_count",
+        "latency_ms",
+        "error_code"
+      ]
+    }
+  },
+  "rag_notes": {
+    "recommended_k": 5,
+    "max_context_chars": 6000,
+    "guardrails": [
+      "se rag_context vazio, seguir semântico fallback",
+      "nunca inserir conteúdo confidencial sem filtro",
+      "registrar fontes usadas no meta.debug"
+    ]
+  },
+  "benefits": [
+    "respostas mais consistentes com histórico real",
+    "aprendizado semântico contínuo",
+    "melhor suporte a análises futuras"
+  ]
+}

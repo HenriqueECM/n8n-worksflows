@@ -1,0 +1,103 @@
+{
+  "name": "Fluxo dados Gerais | produção | v4 db+cache",
+  "goal": "Remover prompts hardcoded do workflow e carregar prompt ativo por campo via PostgreSQL com cache em memória (workflow static data).",
+  "entry_contract": {
+    "body.aba": "dados_gerais",
+    "body.dados.campo": "chave do campo",
+    "body.dados.conteudo": "texto livre",
+    "body.dados.estado_atual.dados_gerais": "objeto com contexto"
+  },
+  "pipeline": [
+    {
+      "step": 1,
+      "node": "Webhook + Validar entrada",
+      "output": ["payload normalizado", "_validation"]
+    },
+    {
+      "step": 2,
+      "node": "Switch1",
+      "rule": "_validation.isValid = true AND aba = dados_gerais",
+      "fallback": "Erro de validação/roteamento"
+    },
+    {
+      "step": 3,
+      "node": "Switch campo",
+      "rule": "body.dados.campo",
+      "fallback": "Erro de validação/roteamento"
+    },
+    {
+      "step": 4,
+      "node": "Preparar Chave Prompt",
+      "output": ["prompt_key", "conteudo", "dadosGerais", "tenant(optional)"]
+    },
+    {
+      "step": 5,
+      "node": "Cache Lookup (global static data)",
+      "logic": "se existir cache válido por prompt_key retorna prompt_template"
+    },
+    {
+      "step": 6,
+      "node": "IF cache hit",
+      "true": "Renderizar Prompt",
+      "false": "Buscar Prompt no PostgreSQL"
+    },
+    {
+      "step": 7,
+      "node": "PostgreSQL - Buscar Prompt Ativo",
+      "query": "SELECT campo, versao, prompt_template FROM ai_prompts WHERE campo = $1 AND ativo = true ORDER BY versao DESC LIMIT 1"
+    },
+    {
+      "step": 8,
+      "node": "Cache Store",
+      "logic": "grava prompt_template + versao + expires_at no staticData global"
+    },
+    {
+      "step": 9,
+      "node": "Renderizar Prompt",
+      "logic": [
+        "replace {{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }}",
+        "replace {{ $json.body.dados.conteudo }}"
+      ],
+      "output": ["prompt", "prompt_version"]
+    },
+    {
+      "step": 10,
+      "node": "IA - Prompt Dinâmico",
+      "request_body": {
+        "question": "{{$json.prompt}}"
+      }
+    },
+    {
+      "step": 11,
+      "node": "Parser robusto + Respond to Webhook",
+      "response_meta": ["erro", "debug", "prompt_version", "cache_hit"]
+    }
+  ],
+  "database_schema": {
+    "table": "ai_prompts",
+    "columns": [
+      "id UUID PK",
+      "campo TEXT NOT NULL",
+      "versao INT NOT NULL",
+      "prompt_template TEXT NOT NULL",
+      "ativo BOOLEAN NOT NULL DEFAULT false",
+      "created_at TIMESTAMP",
+      "updated_at TIMESTAMP"
+    ],
+    "indexes": [
+      "UNIQUE(campo, versao)",
+      "INDEX(campo, ativo)"
+    ]
+  },
+  "cache_policy": {
+    "ttl_seconds": 900,
+    "key_pattern": "prompt:{campo}:active",
+    "fallback_when_missing": "query_postgres"
+  },
+  "benefits": [
+    "manutenção de prompt fora do workflow",
+    "rollback por versão",
+    "ganho de performance com cache",
+    "padronização para múltiplos ambientes"
+  ]
+}
