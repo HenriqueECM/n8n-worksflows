@@ -1,0 +1,461 @@
+{
+  "name": "Fluxo dados Gerais | produção | v2 rag+db+cache",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "93745155-2c96-4010-aea8-2f927e7100af",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2288,
+        -192
+      ],
+      "id": "0f353a43-988d-4823-a461-f7c9972e633b",
+      "name": "Webhook",
+      "webhookId": "93745155-2c96-4010-aea8-2f927e7100af"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json || {};\nconst body = input.body ?? {};\nconst dados = body.dados ?? {};\nconst conteudo = (dados.conteudo ?? '').toString().trim();\nconst aba = (body.aba ?? '').toString().trim();\nconst campo = (dados.campo ?? '').toString().trim();\nconst errors = [];\nif (!aba) errors.push('Campo obrigatório ausente: body.aba');\nif (!campo) errors.push('Campo obrigatório ausente: body.dados.campo');\nif (!conteudo) errors.push('Campo obrigatório ausente: body.dados.conteudo');\nreturn { ...input, body: { ...body, dados: { ...dados, conteudo, campo, estado_atual: dados.estado_atual ?? { dados_gerais: {} } } }, prompt_key: campo, _validation: { isValid: errors.length === 0, errors } };"
+      },
+      "id": "f32be3b5-1317-4f70-9875-f54f4f50a920",
+      "name": "Validar entrada1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2528,
+        -192
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json._validation?.isValid ?? false }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    },
+                    "id": "validation-ok"
+                  },
+                  {
+                    "leftValue": "={{ $json.body?.aba || '' }}",
+                    "rightValue": "dados_gerais",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "aba-dados-gerais"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "id": "49e55237-42f7-4031-b4c7-001314fd655c",
+      "name": "segurança do payload",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        2736,
+        -192
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json || {};\nconst aba = (input.body?.aba ?? '').toString().trim();\nconst campo = (input.body?.dados?.campo ?? '').toString().trim();\nconst validationErrors = input._validation?.errors ?? [];\nlet code = 'ROUTING_ERROR';\nlet message = 'Não foi possível rotear a requisição no workflow.';\nif (validationErrors.length > 0) { code = 'VALIDATION_ERROR'; message = 'Payload inválido. Corrija os campos obrigatórios e tente novamente.'; } else if (aba && aba !== 'dados_gerais') { code = 'UNSUPPORTED_ABA'; message = `Aba não suportada: ${aba}. Valor esperado: dados_gerais.`; } else if (campo) { code = 'UNSUPPORTED_CAMPO'; message = `Campo não suportado: ${campo}.`; }\nreturn { campo: campo || null, conteudo: message, erro: { code, message, details: validationErrors }, debug: { aba: aba || null, campo: campo || null } };"
+      },
+      "id": "efcc2b37-03fd-43e9-a37a-150aa90fc578",
+      "name": "Erro de validação/roteamento1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3056,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { resultado: { campo: $json.campo ?? null, conteudo: $json.conteudo ?? '' }, meta: { erro: $json.erro ?? null, debug: $json.debug ?? null } } }}",
+        "options": {}
+      },
+      "id": "f49f6132-b8c1-4777-b49c-e4de5c821dae",
+      "name": "Respond to Webhook1",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        5168,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json || {};\nconst key = `prompt:${input.prompt_key}:active`;\nconst cache = this.getWorkflowStaticData('global');\nconst item = cache[key];\nconst ttlMs = 15 * 60 * 1000;\nconst valid = item && item.updated_at && (Date.now() - new Date(item.updated_at).getTime() < ttlMs);\nif (!valid) return { ...input, cache_hit: false, cache_key: key };\nreturn { ...input, cache_hit: true, cache_key: key, prompt_template: item.prompt_template, prompt_version: item.prompt_version ?? 1, prompt_source: 'cache' };"
+      },
+      "id": "25cfbd21-3b6a-4321-85e7-53e78da32597",
+      "name": "Cache Lookup Prompt1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3072,
+        -352
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3520,
+        -224
+      ],
+      "id": "599e735a-015f-4e44-970c-cb41dcb663cb",
+      "name": "Get a row"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json || {};\nif (input.erro?.code) return input;\nconst conteudo = (input.body?.dados?.conteudo ?? '').toString();\nconst dadosGerais = input.body?.dados?.estado_atual?.dados_gerais ?? {};\nconst template = (input.prompt_template ?? '').toString();\nif (!template) return { ...input, erro: { code: 'PROMPT_NOT_FOUND', message: `Prompt não encontrado para o campo: ${input.prompt_key}` } };\nconst renderedPrompt = template.replaceAll('{{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }}', JSON.stringify(dadosGerais)).replaceAll('{ JSON.stringify($json.body.dados.estado_atual.dados_gerais) }', JSON.stringify(dadosGerais)).replaceAll('{{ $json.body.dados.conteudo }}', conteudo).replaceAll('{ $json.body.dados.conteudo }', conteudo);\nreturn { ...input, prompt_base: renderedPrompt };"
+      },
+      "id": "780eea18-e138-4e3d-b16c-d14ba223fdb1",
+      "name": "Resolver Prompt Fonte1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3952,
+        -368
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apihub.weg.net/external/fb8df9df-d49b-42b3-8da0-794e175cab44/v1/chat_genai",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "={{ $json.prompt }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      },
+      "id": "0cecefe5-c5e8-416c-aeaa-a0ddecb4ab15",
+      "name": "IA - Prompt Dinâmico1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        4688,
+        -368
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "D9IHs5FSqkIpriiu",
+          "name": "credencial genai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json || {};\nconst rawResponse = input.response;\nconst normalizeParsed = (parsed) => { if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return { campo: parsed.campo ?? input.body?.dados?.campo ?? null, conteudo: (parsed.conteudo ?? '').toString().trim() || JSON.stringify(parsed), erro: parsed.erro ?? null, debug: { ...(parsed.debug ?? {}), prompt_version: input.prompt_version ?? null, cache_hit: input.cache_hit ?? false, rag_hit_count: input.rag_hit_count ?? 0 } }; return { campo: input.body?.dados?.campo ?? null, conteudo: (parsed ?? '').toString().trim(), erro: null, debug: { prompt_version: input.prompt_version ?? null, cache_hit: input.cache_hit ?? false, rag_hit_count: input.rag_hit_count ?? 0 } }; };\ntry { if (rawResponse === undefined || rawResponse === null) throw new Error('A resposta da IA veio vazia'); if (typeof rawResponse === 'object') return normalizeParsed(rawResponse); const cleanData = rawResponse.toString().replace(/```json|```/gi, '').replace(/<[^>]*>/g, '').trim(); if (!cleanData) throw new Error('A resposta da IA veio vazia após limpeza'); try { return normalizeParsed(JSON.parse(cleanData)); } catch { return normalizeParsed(cleanData); } } catch (e) { return { campo: input.body?.dados?.campo ?? null, conteudo: 'Falha ao processar resposta da IA.', erro: { code: 'PARSE_ERROR', message: e.message }, debug: { prompt_version: input.prompt_version ?? null, cache_hit: input.cache_hit ?? false, rag_hit_count: input.rag_hit_count ?? 0 } }; }"
+      },
+      "id": "076a9d20-1ec9-4414-9872-1679fee85485",
+      "name": "Code in JavaScript1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4880,
+        -368
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9c23e41d-6f5c-4484-8749-27927fed525a",
+              "leftValue": "={{ $json.cache_hit ?? false }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3280,
+        -352
+      ],
+      "id": "69b5024f-341f-4593-98b6-9c805ba250dc",
+      "name": "If cache hit"
+    },
+    {
+      "parameters": {
+        "jsCode": "const previous = $('IF Cache Hit').first().json;\nconst response = $input.first().json;\nconst row = Array.isArray(response) ? response[0] : (response?.data?.[0] ?? response?.[0] ?? response);\nif (!row?.prompt_template) return { ...previous, erro: { code: 'PROMPT_NOT_FOUND', message: `Prompt não encontrado para o campo: ${previous.prompt_key}` }, debug: { prompt_key: previous.prompt_key, source: 'supabase' } };\nconst cache = this.getWorkflowStaticData('global');\ncache[previous.cache_key] = { prompt_template: row.prompt_template, prompt_version: row.versao ?? 1, updated_at: new Date().toISOString() };\nreturn { ...previous, prompt_template: row.prompt_template, prompt_version: row.versao ?? 1, prompt_source: 'supabase', cache_hit: false };"
+      },
+      "id": "e703a43a-1f72-44c0-ab5d-c5502801570a",
+      "name": "Cache Store",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3728,
+        -224
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.MONGODB_DATA_API_URL }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"dataSource\": $env.MONGODB_DATASOURCE, \"database\": $env.MONGODB_DATABASE, \"collection\": $env.MONGODB_COLLECTION, \"pipeline\": [ { \"$vectorSearch\": { \"index\": \"default\", \"path\": \"embedding\", \"queryVector\": $json.embedding, \"numCandidates\": 100, \"limit\": 5, \"filter\": { \"campo\": $json.prompt_key } } }, { \"$project\": { \"_id\": 0, \"text\": 1, \"source\": 1, \"score\": { \"$meta\": \"vectorSearchScore\" } } } ] }",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "id": "12b20085-dc8d-483f-b37f-b2bb14075764",
+      "name": "Mongo Atlas Vector Search1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        4304,
+        -368
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "B1Sd6719J7QXnxGo",
+          "name": "credencial webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const base = $('Anexar Embedding').first().json;\nif (base.erro?.code) return base;\nconst vectorResp = $input.first().json;\nconst docs = vectorResp?.documents ?? vectorResp?.data ?? [];\nconst ragContext = Array.isArray(docs) ? docs.map((d, i) => { const source = d?.source ?? `doc_${i+1}`; const text = (d?.text ?? '').toString().trim(); return text ? `• [${source}] ${text}` : ''; }).filter(Boolean).join('\\n') : '';\nconst finalPrompt = ragContext ? `${base.prompt_base}\\n\\n## Contexto RAG\\n${ragContext}` : base.prompt_base;\nreturn { ...base, prompt: finalPrompt, rag_context: ragContext, rag_hit_count: Array.isArray(docs) ? docs.length : 0 };"
+      },
+      "id": "27e4717a-ca8b-46e5-890f-b501def96a36",
+      "name": "Montar Prompt Final1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4496,
+        -368
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validar entrada1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar entrada1": {
+      "main": [
+        [
+          {
+            "node": "segurança do payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "segurança do payload": {
+      "main": [
+        [
+          {
+            "node": "Cache Lookup Prompt1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro de validação/roteamento1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro de validação/roteamento1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cache Lookup Prompt1": {
+      "main": [
+        [
+          {
+            "node": "If cache hit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row": {
+      "main": [
+        [
+          {
+            "node": "Cache Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolver Prompt Fonte1": {
+      "main": [
+        []
+      ]
+    },
+    "IA - Prompt Dinâmico1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If cache hit": {
+      "main": [
+        [
+          {
+            "node": "Resolver Prompt Fonte1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cache Store": {
+      "main": [
+        [
+          {
+            "node": "Resolver Prompt Fonte1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar Prompt Final1": {
+      "main": [
+        [
+          {
+            "node": "IA - Prompt Dinâmico1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mongo Atlas Vector Search1": {
+      "main": [
+        [
+          {
+            "node": "Montar Prompt Final1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b1d440d5-47d0-453b-a4e4-8958385bcb3e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5cf0849f695b944e2c3d530f4b618a0c5fc10f811c4f60c443e40e66ab1065d9"
+  },
+  "id": "yXeJprNuURenoN7q",
+  "tags": []
+}
