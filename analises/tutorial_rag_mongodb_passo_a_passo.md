@@ -54,6 +54,20 @@ Coleções:
 4. Montar `rag_context` com os melhores trechos.
 5. Injetar `rag_context` no prompt antes da chamada da IA.
 
+### Observação importante (sem AI Agent)
+Se você **não** vai usar AI Agent, o fluxo continua igual no conceito:
+- gerar embedding da entrada atual;
+- consultar o banco vetorial;
+- montar `rag_context` para o prompt final.
+
+Você pode trocar o HTTP de embeddings por nó padrão de embeddings do n8n.
+
+Para evitar comportamento de ferramenta de agente:
+- no MongoDB Atlas Vector Store use **`Get Many`**;
+- **não** use `Retrieve Documents (As Tool for AI Agent)`.
+
+> Resumo prático: trocar nó HTTP por nó nativo de embedding é válido e mantém a busca vetorial funcionando, desde que a consulta seja feita em modo de recuperação normal (`Get Many`).
+
 ---
 
 ## 4) Índice vetorial
